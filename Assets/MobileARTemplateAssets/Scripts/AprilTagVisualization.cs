@@ -23,7 +23,7 @@ public class AprilTagVisualization : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Whether to show the AprilTag ID as text.")]
-    bool m_ShowTagId = true;
+    bool m_ShowTagId = false;
 
     /// <summary>
     /// Whether to show the AprilTag ID as text.
