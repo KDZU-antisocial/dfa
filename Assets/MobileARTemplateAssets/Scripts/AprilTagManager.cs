@@ -117,11 +117,77 @@ public class AprilTagManager : MonoBehaviour
         set => m_ShowDebugInfo = value;
     }
 
+    [SerializeField]
+    [Tooltip("Show detailed frame-by-frame logging.")]
+    bool m_ShowDetailedLogging = false;
+
+    /// <summary>
+    /// Show detailed frame-by-frame logging.
+    /// </summary>
+    public bool showDetailedLogging
+    {
+        get => m_ShowDetailedLogging;
+        set => m_ShowDetailedLogging = value;
+    }
+
+    [SerializeField]
+    [Tooltip("Spawn a debug marker at world origin (0,0,0).")]
+    bool m_ShowOriginMarker = false;
+
+    /// <summary>
+    /// Spawn a debug marker at world origin (0,0,0).
+    /// </summary>
+    public bool showOriginMarker
+    {
+        get => m_ShowOriginMarker;
+        set
+        {
+            m_ShowOriginMarker = value;
+            UpdateOriginMarker();
+        }
+    }
+
+    [SerializeField]
+    [Tooltip("Height offset for the origin marker (in meters).")]
+    float m_OriginMarkerHeight = 0.1f;
+
+    /// <summary>
+    /// Height offset for the origin marker (in meters).
+    /// </summary>
+    public float originMarkerHeight
+    {
+        get => m_OriginMarkerHeight;
+        set
+        {
+            m_OriginMarkerHeight = value;
+            UpdateOriginMarkerPosition();
+        }
+    }
+
+    [SerializeField]
+    [Tooltip("Show a debug marker at the camera's position.")]
+    bool m_ShowCameraMarker = false;
+
+    /// <summary>
+    /// Show a debug marker at the camera's position.
+    /// </summary>
+    public bool showCameraMarker
+    {
+        get => m_ShowCameraMarker;
+        set
+        {
+            m_ShowCameraMarker = value;
+            UpdateCameraMarker();
+        }
+    }
+
     // Private fields
     private TagDetector m_Detector;
     private Dictionary<int, AprilTagVisualization> m_TrackedTags = new Dictionary<int, AprilTagVisualization>();
     private List<TagPose> m_CurrentDetections = new List<TagPose>();
     private bool m_IsInitialized = false;
+    private GameObject m_OriginMarkerObject;
+    private GameObject m_CameraMarkerObject;
 
     /// <summary>
     /// Event fired when an AprilTag is detected for the first time.
@@ -141,6 +207,8 @@ public class AprilTagManager : MonoBehaviour
     void Start()
     {
         InitializeDetector();
+        UpdateOriginMarker();
+        UpdateCameraMarker();
     }
 
     void Update()
@@ -148,6 +216,13 @@ public class AprilTagManager : MonoBehaviour
         if (m_IsInitialized && m_ARCamera != null)
         {
             ProcessFrame();
+            
+            // Update camera marker position every frame
+            if (m_ShowCameraMarker && m_CameraMarkerObject != null && m_ARCamera != null)
+            {
+                m_CameraMarkerObject.transform.position = m_ARCamera.transform.position;
+                m_CameraMarkerObject.transform.rotation = m_ARCamera.transform.rotation;
+            }
         }
     }
 
@@ -241,11 +316,23 @@ public class AprilTagManager : MonoBehaviour
         m_CurrentDetections.Clear();
         m_CurrentDetections.AddRange(m_Detector.DetectedTags);
 
+        if (m_ShowDetailedLogging && m_CurrentDetections.Count > 0)
+        {
+            Debug.Log($"[AprilTagMgr] Processing {m_CurrentDetections.Count} detected tags");
+        }
+
         // Create a set of currently detected tag IDs
         HashSet<int> currentTagIds = new HashSet<int>();
         foreach (var tagPose in m_CurrentDetections)
         {
             currentTagIds.Add(tagPose.ID);
+            
+            if (m_ShowDetailedLogging)
+            {
+                Debug.Log($"[AprilTagMgr] Detected Tag {tagPose.ID}:");
+                Debug.Log($"  Position: {tagPose.Position}");
+                Debug.Log($"  Rotation: {tagPose.Rotation.eulerAngles}");
+            }
         }
 
         // Check for lost tags
@@ -288,6 +375,10 @@ public class AprilTagManager : MonoBehaviour
                 var visualization = m_TrackedTags[tagId];
                 if (visualization != null)
                 {
+                    if (m_ShowDetailedLogging)
+                    {
+                        Debug.Log($"[AprilTagMgr] Updating existing tag {tagId}");
+                    }
                     visualization.UpdatePosition(tagPose);
                     OnAprilTagUpdated?.Invoke(tagId, tagPose);
                 }
@@ -386,5 +477,136 @@ public class AprilTagManager : MonoBehaviour
     public void SetDetectionEnabled(bool enabled)
     {
         m_IsInitialized = enabled;
+    }
+
+    /// <summary>
+    /// Create or destroy the origin marker based on the showOriginMarker flag.
+    /// </summary>
+    void UpdateOriginMarker()
+    {
+        if (m_ShowOriginMarker && m_OriginMarkerObject == null)
+        {
+            CreateOriginMarker();
+        }
+        else if (!m_ShowOriginMarker && m_OriginMarkerObject != null)
+        {
+            Destroy(m_OriginMarkerObject);
+            m_OriginMarkerObject = null;
+        }
+    }
+
+    /// <summary>
+    /// Update the position of the origin marker.
+    /// </summary>
+    void UpdateOriginMarkerPosition()
+    {
+        if (m_OriginMarkerObject != null)
+        {
+            m_OriginMarkerObject.transform.position = new Vector3(0, m_OriginMarkerHeight, 0);
+        }
+    }
+
+    /// <summary>
+    /// Create a debug marker at the world origin.
+    /// </summary>
+    void CreateOriginMarker()
+    {
+        // Create a small cube at the origin
+        m_OriginMarkerObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        m_OriginMarkerObject.name = "Debug_OriginMarker";
+        m_OriginMarkerObject.transform.position = new Vector3(0, m_OriginMarkerHeight, 0);
+        m_OriginMarkerObject.transform.localScale = Vector3.one * 0.05f; // 5cm cube
+        
+        // Make it bright red and visible with an unlit shader
+        var renderer = m_OriginMarkerObject.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            // Create a new material with unlit shader for bright, consistent color
+            Material mat = new Material(Shader.Find("Sprites/Default"));
+            mat.color = new Color(1f, 0f, 0f, 1f); // Bright red
+            renderer.material = mat;
+        }
+
+        if (m_ShowDebugInfo)
+        {
+            Debug.Log($"Origin marker created at (0, {m_OriginMarkerHeight}, 0)");
+        }
+    }
+
+    /// <summary>
+    /// Create or destroy the camera marker based on the showCameraMarker flag.
+    /// </summary>
+    void UpdateCameraMarker()
+    {
+        if (m_ShowCameraMarker && m_CameraMarkerObject == null)
+        {
+            CreateCameraMarker();
+        }
+        else if (!m_ShowCameraMarker && m_CameraMarkerObject != null)
+        {
+            Destroy(m_CameraMarkerObject);
+            m_CameraMarkerObject = null;
+        }
+    }
+
+    /// <summary>
+    /// Create a debug marker at the camera position.
+    /// </summary>
+    void CreateCameraMarker()
+    {
+        if (m_ARCamera == null)
+        {
+            Debug.LogWarning("Cannot create camera marker - AR Camera is null");
+            return;
+        }
+
+        // Create a small sphere at the camera position
+        m_CameraMarkerObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        m_CameraMarkerObject.name = "Debug_CameraMarker";
+        m_CameraMarkerObject.transform.position = m_ARCamera.transform.position;
+        m_CameraMarkerObject.transform.localScale = Vector3.one * 0.1f; // 10cm sphere - make it bigger so it's more visible
+        
+        // Make it bright cyan and visible with an unlit shader
+        var renderer = m_CameraMarkerObject.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            // Create a new material with unlit shader for bright, consistent color
+            Material mat = new Material(Shader.Find("Sprites/Default"));
+            mat.color = new Color(0f, 1f, 1f, 1f); // Bright cyan
+            renderer.material = mat;
+        }
+
+        // Add a direction indicator to show camera forward
+        CreateCameraDirectionIndicator();
+
+        if (m_ShowDebugInfo)
+        {
+            Debug.Log($"Camera marker created at {m_ARCamera.transform.position}");
+        }
+    }
+
+    /// <summary>
+    /// Create a visual indicator showing the camera's forward direction.
+    /// </summary>
+    void CreateCameraDirectionIndicator()
+    {
+        if (m_CameraMarkerObject == null) return;
+
+        // Create an elongated cube pointing forward to show camera direction
+        GameObject directionMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        directionMarker.name = "CameraDirection";
+        directionMarker.transform.SetParent(m_CameraMarkerObject.transform);
+        directionMarker.transform.localPosition = new Vector3(0, 0, 0.2f); // 20cm in front
+        directionMarker.transform.localRotation = Quaternion.identity;
+        directionMarker.transform.localScale = new Vector3(0.02f, 0.02f, 0.3f); // Thin elongated cube
+        
+        var renderer = directionMarker.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            // Create a new material with unlit shader for bright, consistent color
+            Material mat = new Material(Shader.Find("Sprites/Default"));
+            mat.color = new Color(1f, 1f, 0f, 1f); // Bright yellow
+            renderer.material = mat;
+        }
     }
 }

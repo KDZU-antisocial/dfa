@@ -4970,9 +4970,13 @@ MonoBehaviour:
   m_AprilTagParent: {fileID: 373507733}
   m_FieldOfView: 60
   m_TagSize: 0.05
-  m_VisualizationScale: 0.05
+  m_VisualizationScale: 0.02
   m_MaxTrackedTags: 2
   m_ShowDebugInfo: 1
+  m_ShowDetailedLogging: 1
+  m_ShowOriginMarker: 1
+  m_OriginMarkerHeight: 0.1
+  m_ShowCameraMarker: 1
 --- !u!4 &1308386614
 Transform:
   m_ObjectHideFlags: 0

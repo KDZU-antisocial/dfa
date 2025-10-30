@@ -60,11 +60,27 @@ public class AprilTagVisualization : MonoBehaviour
         set => m_TagCanvas = value;
     }
 
+    [Header("Debug")]
+    [SerializeField]
+    [Tooltip("Enable detailed logging for debugging.")]
+    bool m_EnableLogging = true;
+
+    /// <summary>
+    /// Enable detailed logging for debugging.
+    /// </summary>
+    public bool enableLogging
+    {
+        get => m_EnableLogging;
+        set => m_EnableLogging = value;
+    }
+
     // Private fields
     private TagPose m_CurrentTagPose;
     private Camera m_ARCamera;
     private int m_TagId;
     private bool m_IsInitialized = false;
+    private Vector3 m_LastPosition;
+    private Quaternion m_LastRotation;
 
     /// <summary>
     /// The current AprilTag pose data.
@@ -92,10 +108,8 @@ public class AprilTagVisualization : MonoBehaviour
 
     void Update()
     {
-        if (m_IsInitialized && m_CurrentTagPose.ID != 0)
-        {
-            UpdatePosition(m_CurrentTagPose);
-        }
+        // Don't update in Update() - only update when AprilTagManager calls UpdatePosition
+        // This prevents duplicate updates and ensures we use the latest detection data
     }
 
     /// <summary>
@@ -109,6 +123,13 @@ public class AprilTagVisualization : MonoBehaviour
         m_ARCamera = arCamera;
         m_TagId = tagPose.ID;
         m_IsInitialized = true;
+
+        if (m_EnableLogging)
+        {
+            Debug.Log($"[AprilTagViz] Tag {m_TagId} INITIALIZED");
+            Debug.Log($"[AprilTagViz] Initial Position: {tagPose.Position}");
+            Debug.Log($"[AprilTagViz] Initial Rotation: {tagPose.Rotation.eulerAngles}");
+        }
 
         // Set the initial position
         UpdatePosition(tagPose);
@@ -126,17 +147,42 @@ public class AprilTagVisualization : MonoBehaviour
     /// <param name="tagPose">The current AprilTag pose data.</param>
     public void UpdatePosition(TagPose tagPose)
     {
-        if (tagPose.ID == 0 || m_ARCamera == null)
+        if (m_ARCamera == null)
+        {
+            if (m_EnableLogging)
+                Debug.LogWarning($"[AprilTagViz] UpdatePosition skipped - Camera is null");
             return;
+        }
 
         m_CurrentTagPose = tagPose;
 
-        // Apply the pose to the transform
-        transform.position = tagPose.Position;
-        transform.rotation = tagPose.Rotation;
+        // Store old values for comparison
+        Vector3 oldPosition = transform.position;
+        Quaternion oldRotation = transform.rotation;
+
+        // Transform from camera-local space to world space
+        // TagPose.Position and TagPose.Rotation are in camera-local coordinates
+        transform.position = m_ARCamera.transform.TransformPoint(tagPose.Position);
+        transform.rotation = m_ARCamera.transform.rotation * tagPose.Rotation;
         
         // Apply scale
         transform.localScale = Vector3.one * m_Scale;
+
+        // Log if position or rotation changed significantly
+        if (m_EnableLogging)
+        {
+            float positionDelta = Vector3.Distance(oldPosition, transform.position);
+            float rotationDelta = Quaternion.Angle(oldRotation, transform.rotation);
+            
+            if (positionDelta > 0.01f || rotationDelta > 1f)
+            {
+                Debug.Log($"[AprilTagViz] Tag {m_TagId} UPDATED:");
+                Debug.Log($"  Position: {transform.position} (delta: {positionDelta:F4}m)");
+                Debug.Log($"  Rotation: {transform.rotation.eulerAngles} (delta: {rotationDelta:F2}°)");
+                Debug.Log($"  TagPose.Position: {tagPose.Position}");
+                Debug.Log($"  TagPose.Rotation: {tagPose.Rotation.eulerAngles}");
+            }
+        }
 
         // Update canvas to face the camera
         if (m_TagCanvas != null)
@@ -144,6 +190,10 @@ public class AprilTagVisualization : MonoBehaviour
             m_TagCanvas.transform.LookAt(m_ARCamera.transform);
             m_TagCanvas.transform.Rotate(0, 180, 0); // Face the camera
         }
+        
+        // Store for next comparison
+        m_LastPosition = transform.position;
+        m_LastRotation = transform.rotation;
     }
 
     void SetupTagIdText()
