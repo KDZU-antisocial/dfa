@@ -79,7 +79,7 @@ public class AprilTagManager : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Visual scale multiplier for the prefab (1 = normal size).")]
-    float m_VisualizationScale = 1f;
+    float m_VisualizationScale = 2f;
 
     /// <summary>
     /// Visual scale multiplier for the prefab.
@@ -101,6 +101,19 @@ public class AprilTagManager : MonoBehaviour
     {
         get => m_MaxTrackedTags;
         set => m_MaxTrackedTags = Mathf.Max(1, value);
+    }
+
+    [SerializeField]
+    [Tooltip("Number of frames to wait before removing a lost AprilTag (prevents flickering).")]
+    int m_LostTagPersistenceFrames = 30;
+
+    /// <summary>
+    /// Number of frames to wait before removing a lost AprilTag.
+    /// </summary>
+    public int lostTagPersistenceFrames
+    {
+        get => m_LostTagPersistenceFrames;
+        set => m_LostTagPersistenceFrames = Mathf.Max(0, value);
     }
 
     [Header("Debug")]
@@ -128,6 +141,19 @@ public class AprilTagManager : MonoBehaviour
     {
         get => m_ShowDetailedLogging;
         set => m_ShowDetailedLogging = value;
+    }
+
+    [SerializeField]
+    [Tooltip("Anchor the world origin to the first detected AprilTag (tag stays at fixed world position).")]
+    bool m_AnchorWorldToFirstTag = true;
+
+    /// <summary>
+    /// Anchor the world origin to the first detected AprilTag.
+    /// </summary>
+    public bool anchorWorldToFirstTag
+    {
+        get => m_AnchorWorldToFirstTag;
+        set => m_AnchorWorldToFirstTag = value;
     }
 
     [SerializeField]
@@ -184,6 +210,9 @@ public class AprilTagManager : MonoBehaviour
     // Private fields
     private TagDetector m_Detector;
     private Dictionary<int, AprilTagVisualization> m_TrackedTags = new Dictionary<int, AprilTagVisualization>();
+    private Dictionary<int, int> m_LostTagFrameCount = new Dictionary<int, int>(); // Tracks frames since tag was lost
+    private Dictionary<int, Vector3> m_TagWorldPositions = new Dictionary<int, Vector3>(); // Stores fixed world positions for anchored tags
+    private Dictionary<int, Quaternion> m_TagWorldRotations = new Dictionary<int, Quaternion>(); // Stores fixed world rotations for anchored tags
     private List<TagPose> m_CurrentDetections = new List<TagPose>();
     private bool m_IsInitialized = false;
     private GameObject m_OriginMarkerObject;
@@ -217,10 +246,10 @@ public class AprilTagManager : MonoBehaviour
         {
             ProcessFrame();
             
-            // Update camera marker position every frame
+            // Update camera marker position every frame (1m in front of camera so it's visible)
             if (m_ShowCameraMarker && m_CameraMarkerObject != null && m_ARCamera != null)
             {
-                m_CameraMarkerObject.transform.position = m_ARCamera.transform.position;
+                m_CameraMarkerObject.transform.position = m_ARCamera.transform.position + m_ARCamera.transform.forward * 1.0f;
                 m_CameraMarkerObject.transform.rotation = m_ARCamera.transform.rotation;
             }
         }
@@ -335,18 +364,44 @@ public class AprilTagManager : MonoBehaviour
             }
         }
 
-        // Check for lost tags
-        List<int> lostTags = new List<int>();
+        // Check for lost tags and update persistence counters
+        List<int> tagsToRemove = new List<int>();
         foreach (var kvp in m_TrackedTags)
         {
-            if (!currentTagIds.Contains(kvp.Key))
+            int tagId = kvp.Key;
+            
+            if (!currentTagIds.Contains(tagId))
             {
-                lostTags.Add(kvp.Key);
+                // Tag was not detected this frame
+                if (!m_LostTagFrameCount.ContainsKey(tagId))
+                {
+                    m_LostTagFrameCount[tagId] = 0;
+                    if (m_ShowDebugInfo)
+                    {
+                        Debug.Log($"AprilTag {tagId} lost - will persist for {m_LostTagPersistenceFrames} frames");
+                    }
+                }
+                
+                m_LostTagFrameCount[tagId]++;
+                
+                // Only remove after persistence timeout
+                if (m_LostTagFrameCount[tagId] >= m_LostTagPersistenceFrames)
+                {
+                    tagsToRemove.Add(tagId);
+                }
+            }
+            else
+            {
+                // Tag was detected - reset lost counter if it exists
+                if (m_LostTagFrameCount.ContainsKey(tagId))
+                {
+                    m_LostTagFrameCount.Remove(tagId);
+                }
             }
         }
 
-        // Remove lost tags
-        foreach (int tagId in lostTags)
+        // Remove tags that have been lost for too long
+        foreach (int tagId in tagsToRemove)
         {
             if (m_TrackedTags.TryGetValue(tagId, out var visualization))
             {
@@ -355,11 +410,12 @@ public class AprilTagManager : MonoBehaviour
                     Destroy(visualization.gameObject);
                 }
                 m_TrackedTags.Remove(tagId);
+                m_LostTagFrameCount.Remove(tagId);
                 OnAprilTagLost?.Invoke(tagId);
 
                 if (m_ShowDebugInfo)
                 {
-                    Debug.Log($"AprilTag {tagId} lost");
+                    Debug.Log($"AprilTag {tagId} removed after {m_LostTagPersistenceFrames} frames");
                 }
             }
         }
@@ -401,14 +457,28 @@ public class AprilTagManager : MonoBehaviour
 
     void CreateAprilTagVisualization(TagPose tagPose)
     {
-        if (m_AprilTagPrefab == null)
+        GameObject tagObject;
+        
+        // If no prefab is assigned or prefab doesn't have renderers, create a fallback visualization
+        if (m_AprilTagPrefab == null || !HasVisibleRenderers(m_AprilTagPrefab))
         {
-            Debug.LogError("AprilTagManager: No AprilTag prefab assigned!");
-            return;
+            if (m_ShowDebugInfo && m_AprilTagPrefab == null)
+            {
+                Debug.LogWarning("AprilTagManager: No AprilTag prefab assigned! Creating fallback visualization.");
+            }
+            
+            tagObject = CreateFallbackVisualization();
+            tagObject.transform.SetParent(m_AprilTagParent);
         }
-
-        // Create the visualization GameObject
-        GameObject tagObject = Instantiate(m_AprilTagPrefab, m_AprilTagParent);
+        else
+        {
+            // Create the visualization GameObject from prefab
+            tagObject = Instantiate(m_AprilTagPrefab, m_AprilTagParent);
+            
+            // Make sure all materials on the prefab are bright and visible
+            MakeVisualizationVisible(tagObject);
+        }
+        
         tagObject.name = $"AprilTag_{tagPose.ID}";
 
         // Get or add the visualization component
@@ -418,11 +488,55 @@ public class AprilTagManager : MonoBehaviour
             visualization = tagObject.AddComponent<AprilTagVisualization>();
         }
 
-        // Initialize the visualization
+        // Calculate initial world position
+        Vector3 initialWorldPosition = m_ARCamera.transform.TransformPoint(tagPose.Position);
+        Quaternion initialWorldRotation = m_ARCamera.transform.rotation * tagPose.Rotation;
+        
+        // If anchoring is enabled, use fixed world positioning
+        if (m_AnchorWorldToFirstTag)
+        {
+            // Check if we already have an anchored position for this tag ID
+            if (m_TagWorldPositions.ContainsKey(tagPose.ID))
+            {
+                // Reuse the existing anchored position
+                initialWorldPosition = m_TagWorldPositions[tagPose.ID];
+                initialWorldRotation = m_TagWorldRotations[tagPose.ID];
+                
+                if (m_ShowDebugInfo)
+                {
+                    Debug.Log($"[AprilTagMgr] Tag {tagPose.ID} RE-USING EXISTING anchor at: {initialWorldPosition}");
+                }
+            }
+            else
+            {
+                // First time seeing this tag - store the anchor position
+                m_TagWorldPositions[tagPose.ID] = initialWorldPosition;
+                m_TagWorldRotations[tagPose.ID] = initialWorldRotation;
+                
+                if (m_ShowDebugInfo)
+                {
+                    Debug.Log($"[AprilTagMgr] Tag {tagPose.ID} FIRST ANCHOR at fixed world position: {initialWorldPosition}");
+                    Debug.Log($"[AprilTagMgr] Camera was at: {m_ARCamera.transform.position}");
+                    Debug.Log($"[AprilTagMgr] Tag is {Vector3.Distance(initialWorldPosition, m_ARCamera.transform.position):F4}m from camera");
+                }
+            }
+            
+            // Tell the visualization to use fixed world position (no updates)
+            visualization.useFixedWorldPosition = true;
+            visualization.fixedWorldPosition = initialWorldPosition;
+            visualization.fixedWorldRotation = initialWorldRotation;
+        }
+
+        // Initialize the visualization (this will set the initial position)
         visualization.Initialize(tagPose, m_ARCamera);
         
-        // Apply visualization scale
-        visualization.scale = m_VisualizationScale;
+        // Apply visualization scale (enforce minimum to ensure visibility)
+        float safeScale = Mathf.Max(m_VisualizationScale, 0.5f);
+        if (safeScale != m_VisualizationScale && m_ShowDebugInfo)
+        {
+            Debug.LogWarning($"AprilTagManager: Visualization scale was too small ({m_VisualizationScale}), using minimum safe scale ({safeScale})");
+        }
+        visualization.scale = safeScale;
 
         // Add to tracked tags
         m_TrackedTags[tagPose.ID] = visualization;
@@ -431,6 +545,142 @@ public class AprilTagManager : MonoBehaviour
         {
             Debug.Log($"AprilTag {tagPose.ID} detected at position {tagPose.Position}");
         }
+    }
+    
+    /// <summary>
+    /// Make all renderers on a GameObject bright and visible using unlit shaders.
+    /// </summary>
+    void MakeVisualizationVisible(GameObject obj)
+    {
+        var renderers = obj.GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers)
+        {
+            if (renderer.material != null)
+            {
+                // Try to find a suitable unlit shader with fallbacks
+                Shader shader = Shader.Find("Unlit/Color") ?? 
+                               Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                               Shader.Find("Sprites/Default") ??
+                               Shader.Find("UI/Default");
+                
+                if (shader != null)
+                {
+                    // Get the current color
+                    Color currentColor = renderer.material.color;
+                    
+                    // Make it brighter if it's too dark
+                    if (currentColor.r + currentColor.g + currentColor.b < 0.5f)
+                    {
+                        currentColor = new Color(
+                            Mathf.Max(currentColor.r, 0.5f),
+                            Mathf.Max(currentColor.g, 0.5f),
+                            Mathf.Max(currentColor.b, 0.5f),
+                            1f
+                        );
+                    }
+                    
+                    // Create a new material with the unlit shader
+                    Material mat = new Material(shader);
+                    mat.color = currentColor;
+                    renderer.material = mat;
+                }
+            }
+        }
+        
+        if (m_ShowDebugInfo)
+        {
+            Debug.Log($"Made {renderers.Length} renderers visible with unlit shaders");
+        }
+    }
+    
+    /// <summary>
+    /// Check if a GameObject has visible renderers.
+    /// </summary>
+    bool HasVisibleRenderers(GameObject obj)
+    {
+        if (obj == null) return false;
+        var renderers = obj.GetComponentsInChildren<Renderer>();
+        return renderers != null && renderers.Length > 0;
+    }
+    
+    /// <summary>
+    /// Create a fallback visualization when no prefab is assigned.
+    /// </summary>
+    GameObject CreateFallbackVisualization()
+    {
+        // Create a parent object
+        GameObject tagObject = new GameObject("AprilTagVisualization");
+        
+        // Create a bright green cube as the main tag
+        GameObject mainCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        mainCube.name = "TagPlane";
+        mainCube.transform.SetParent(tagObject.transform);
+        mainCube.transform.localPosition = Vector3.zero;
+        mainCube.transform.localScale = new Vector3(0.1f, 0.1f, 0.01f); // 10cm flat square
+        
+        // Remove collider
+        var collider1 = mainCube.GetComponent<Collider>();
+        if (collider1 != null) Destroy(collider1);
+        
+        // Make it bright green with unlit shader
+        var mainRenderer = mainCube.GetComponent<Renderer>();
+        if (mainRenderer != null)
+        {
+            Shader shader = Shader.Find("Unlit/Color") ?? 
+                           Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                           Shader.Find("Sprites/Default") ??
+                           Shader.Find("UI/Default");
+            
+            if (shader != null)
+            {
+                Material mat = new Material(shader);
+                mat.color = new Color(0f, 1f, 0f, 1f); // Bright green
+                mainRenderer.material = mat;
+            }
+            else
+            {
+                mainRenderer.material.color = new Color(0f, 1f, 0f, 1f); // Bright green fallback
+            }
+        }
+        
+        // Create a bright magenta border frame
+        GameObject borderFrame = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        borderFrame.name = "Border";
+        borderFrame.transform.SetParent(tagObject.transform);
+        borderFrame.transform.localPosition = new Vector3(0, 0, -0.005f); // Slightly behind
+        borderFrame.transform.localScale = new Vector3(0.12f, 0.12f, 0.005f); // 12cm border
+        
+        // Remove collider
+        var collider2 = borderFrame.GetComponent<Collider>();
+        if (collider2 != null) Destroy(collider2);
+        
+        // Make it bright magenta with unlit shader
+        var borderRenderer = borderFrame.GetComponent<Renderer>();
+        if (borderRenderer != null)
+        {
+            Shader shader = Shader.Find("Unlit/Color") ?? 
+                           Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                           Shader.Find("Sprites/Default") ??
+                           Shader.Find("UI/Default");
+            
+            if (shader != null)
+            {
+                Material mat = new Material(shader);
+                mat.color = new Color(1f, 0f, 1f, 1f); // Bright magenta
+                borderRenderer.material = mat;
+            }
+            else
+            {
+                borderRenderer.material.color = new Color(1f, 0f, 1f, 1f); // Bright magenta fallback
+            }
+        }
+        
+        if (m_ShowDebugInfo)
+        {
+            Debug.Log("Created fallback AprilTag visualization (bright green with magenta border)");
+        }
+        
+        return tagObject;
     }
 
     /// <summary>
@@ -515,16 +765,37 @@ public class AprilTagManager : MonoBehaviour
         m_OriginMarkerObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         m_OriginMarkerObject.name = "Debug_OriginMarker";
         m_OriginMarkerObject.transform.position = new Vector3(0, m_OriginMarkerHeight, 0);
-        m_OriginMarkerObject.transform.localScale = Vector3.one * 0.05f; // 5cm cube
+        m_OriginMarkerObject.transform.localScale = Vector3.one * 0.1f; // 10cm cube - larger for visibility
         
-        // Make it bright red and visible with an unlit shader
+        // Remove collider - we don't need physics for debug markers
+        var collider = m_OriginMarkerObject.GetComponent<Collider>();
+        if (collider != null)
+        {
+            Destroy(collider);
+        }
+        
+        // Make it bright red and visible
         var renderer = m_OriginMarkerObject.GetComponent<Renderer>();
         if (renderer != null)
         {
-            // Create a new material with unlit shader for bright, consistent color
-            Material mat = new Material(Shader.Find("Sprites/Default"));
-            mat.color = new Color(1f, 0f, 0f, 1f); // Bright red
-            renderer.material = mat;
+            // Try to find a suitable unlit shader with fallbacks
+            Shader shader = Shader.Find("Unlit/Color") ?? 
+                           Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                           Shader.Find("Sprites/Default") ??
+                           Shader.Find("UI/Default");
+            
+            if (shader != null)
+            {
+                // Create a new material with the found shader
+                Material mat = new Material(shader);
+                mat.color = new Color(1f, 0f, 0f, 1f); // Bright red
+                renderer.material = mat;
+            }
+            else
+            {
+                // Fallback: just modify the existing material's color
+                renderer.material.color = new Color(1f, 0f, 0f, 1f); // Bright red
+            }
         }
 
         if (m_ShowDebugInfo)
@@ -560,20 +831,43 @@ public class AprilTagManager : MonoBehaviour
             return;
         }
 
-        // Create a small sphere at the camera position
+        // Create a sphere offset from the camera so it's visible
         m_CameraMarkerObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         m_CameraMarkerObject.name = "Debug_CameraMarker";
-        m_CameraMarkerObject.transform.position = m_ARCamera.transform.position;
-        m_CameraMarkerObject.transform.localScale = Vector3.one * 0.1f; // 10cm sphere - make it bigger so it's more visible
         
-        // Make it bright cyan and visible with an unlit shader
+        // Position it 1 meter in front of the camera so you can actually see it
+        m_CameraMarkerObject.transform.position = m_ARCamera.transform.position + m_ARCamera.transform.forward * 1.0f;
+        m_CameraMarkerObject.transform.localScale = Vector3.one * 0.15f; // 15cm sphere - larger for visibility
+        
+        // Remove collider - we don't need physics for debug markers
+        var collider = m_CameraMarkerObject.GetComponent<Collider>();
+        if (collider != null)
+        {
+            Destroy(collider);
+        }
+        
+        // Make it bright cyan and visible
         var renderer = m_CameraMarkerObject.GetComponent<Renderer>();
         if (renderer != null)
         {
-            // Create a new material with unlit shader for bright, consistent color
-            Material mat = new Material(Shader.Find("Sprites/Default"));
-            mat.color = new Color(0f, 1f, 1f, 1f); // Bright cyan
-            renderer.material = mat;
+            // Try to find a suitable unlit shader with fallbacks
+            Shader shader = Shader.Find("Unlit/Color") ?? 
+                           Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                           Shader.Find("Sprites/Default") ??
+                           Shader.Find("UI/Default");
+            
+            if (shader != null)
+            {
+                // Create a new material with the found shader
+                Material mat = new Material(shader);
+                mat.color = new Color(0f, 1f, 1f, 1f); // Bright cyan
+                renderer.material = mat;
+            }
+            else
+            {
+                // Fallback: just modify the existing material's color
+                renderer.material.color = new Color(0f, 1f, 1f, 1f); // Bright cyan
+            }
         }
 
         // Add a direction indicator to show camera forward
@@ -581,7 +875,7 @@ public class AprilTagManager : MonoBehaviour
 
         if (m_ShowDebugInfo)
         {
-            Debug.Log($"Camera marker created at {m_ARCamera.transform.position}");
+            Debug.Log($"Camera marker created at {m_CameraMarkerObject.transform.position} (1m in front of camera)");
         }
     }
 
@@ -596,17 +890,38 @@ public class AprilTagManager : MonoBehaviour
         GameObject directionMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
         directionMarker.name = "CameraDirection";
         directionMarker.transform.SetParent(m_CameraMarkerObject.transform);
-        directionMarker.transform.localPosition = new Vector3(0, 0, 0.2f); // 20cm in front
+        directionMarker.transform.localPosition = new Vector3(0, 0, 0.3f); // 30cm in front
         directionMarker.transform.localRotation = Quaternion.identity;
-        directionMarker.transform.localScale = new Vector3(0.02f, 0.02f, 0.3f); // Thin elongated cube
+        directionMarker.transform.localScale = new Vector3(0.03f, 0.03f, 0.5f); // Thin elongated cube - more visible
+        
+        // Remove collider - we don't need physics for debug markers
+        var collider = directionMarker.GetComponent<Collider>();
+        if (collider != null)
+        {
+            Destroy(collider);
+        }
         
         var renderer = directionMarker.GetComponent<Renderer>();
         if (renderer != null)
         {
-            // Create a new material with unlit shader for bright, consistent color
-            Material mat = new Material(Shader.Find("Sprites/Default"));
-            mat.color = new Color(1f, 1f, 0f, 1f); // Bright yellow
-            renderer.material = mat;
+            // Try to find a suitable unlit shader with fallbacks
+            Shader shader = Shader.Find("Unlit/Color") ?? 
+                           Shader.Find("Mobile/Unlit (Supports Lightmap)") ?? 
+                           Shader.Find("Sprites/Default") ??
+                           Shader.Find("UI/Default");
+            
+            if (shader != null)
+            {
+                // Create a new material with the found shader
+                Material mat = new Material(shader);
+                mat.color = new Color(1f, 1f, 0f, 1f); // Bright yellow
+                renderer.material = mat;
+            }
+            else
+            {
+                // Fallback: just modify the existing material's color
+                renderer.material.color = new Color(1f, 1f, 0f, 1f); // Bright yellow
+            }
         }
     }
 }

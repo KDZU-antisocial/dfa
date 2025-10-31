@@ -81,6 +81,38 @@ public class AprilTagVisualization : MonoBehaviour
     private bool m_IsInitialized = false;
     private Vector3 m_LastPosition;
     private Quaternion m_LastRotation;
+    
+    // Fixed world positioning (for anchored tags)
+    private bool m_UseFixedWorldPosition = false;
+    private Vector3 m_FixedWorldPosition;
+    private Quaternion m_FixedWorldRotation;
+
+    /// <summary>
+    /// Whether to use a fixed world position (tag doesn't update with new detections).
+    /// </summary>
+    public bool useFixedWorldPosition
+    {
+        get => m_UseFixedWorldPosition;
+        set => m_UseFixedWorldPosition = value;
+    }
+
+    /// <summary>
+    /// The fixed world position for this tag (when useFixedWorldPosition is true).
+    /// </summary>
+    public Vector3 fixedWorldPosition
+    {
+        get => m_FixedWorldPosition;
+        set => m_FixedWorldPosition = value;
+    }
+
+    /// <summary>
+    /// The fixed world rotation for this tag (when useFixedWorldPosition is true).
+    /// </summary>
+    public Quaternion fixedWorldRotation
+    {
+        get => m_FixedWorldRotation;
+        set => m_FixedWorldRotation = value;
+    }
 
     /// <summary>
     /// The current AprilTag pose data.
@@ -127,12 +159,24 @@ public class AprilTagVisualization : MonoBehaviour
         if (m_EnableLogging)
         {
             Debug.Log($"[AprilTagViz] Tag {m_TagId} INITIALIZED");
-            Debug.Log($"[AprilTagViz] Initial Position: {tagPose.Position}");
-            Debug.Log($"[AprilTagViz] Initial Rotation: {tagPose.Rotation.eulerAngles}");
+            Debug.Log($"[AprilTagViz] Camera-Relative Position: {tagPose.Position}");
+            Debug.Log($"[AprilTagViz] Camera Position: {arCamera.transform.position}");
+            Debug.Log($"[AprilTagViz] Camera Rotation: {arCamera.transform.rotation.eulerAngles}");
+            
+            if (m_UseFixedWorldPosition)
+            {
+                Debug.Log($"[AprilTagViz] Using FIXED world position: {m_FixedWorldPosition}");
+            }
         }
 
         // Set the initial position
         UpdatePosition(tagPose);
+
+        if (m_EnableLogging)
+        {
+            Debug.Log($"[AprilTagViz] World Position: {transform.position}");
+            Debug.Log($"[AprilTagViz] World Rotation: {transform.rotation.eulerAngles}");
+        }
 
         // Update the tag ID text
         if (m_ShowTagId && m_TagIdText != null)
@@ -156,14 +200,59 @@ public class AprilTagVisualization : MonoBehaviour
 
         m_CurrentTagPose = tagPose;
 
+        // If using fixed world position, don't update position based on new detections
+        if (m_UseFixedWorldPosition)
+        {
+            if (m_EnableLogging)
+            {
+                Debug.Log($"[AprilTagViz] Tag {m_TagId} FIXED - staying at world position {m_FixedWorldPosition}");
+                Debug.Log($"  Distance from current camera: {Vector3.Distance(m_FixedWorldPosition, m_ARCamera.transform.position):F4}m");
+            }
+            
+            // Keep the fixed world position
+            transform.position = m_FixedWorldPosition;
+            transform.rotation = m_FixedWorldRotation;
+            
+            // Apply scale
+            transform.localScale = Vector3.one * m_Scale;
+            
+            // Update canvas to face the camera
+            if (m_TagCanvas != null)
+            {
+                m_TagCanvas.transform.LookAt(m_ARCamera.transform);
+                m_TagCanvas.transform.Rotate(0, 180, 0); // Face the camera
+            }
+            
+            return;
+        }
+
         // Store old values for comparison
         Vector3 oldPosition = transform.position;
         Quaternion oldRotation = transform.rotation;
 
-        // Transform from camera-local space to world space
+        if (m_EnableLogging)
+        {
+            Debug.Log($"[AprilTagViz] Tag {m_TagId} UPDATE BEFORE:");
+            Debug.Log($"  Camera-Relative Position: {tagPose.Position}");
+            Debug.Log($"  Camera World Position: {m_ARCamera.transform.position}");
+            Debug.Log($"  Camera World Rotation: {m_ARCamera.transform.rotation.eulerAngles}");
+        }
+
+        // Transform position from camera-relative to world space
         // TagPose.Position and TagPose.Rotation are in camera-local coordinates
-        transform.position = m_ARCamera.transform.TransformPoint(tagPose.Position);
-        transform.rotation = m_ARCamera.transform.rotation * tagPose.Rotation;
+        Vector3 newWorldPosition = m_ARCamera.transform.TransformPoint(tagPose.Position);
+        Quaternion newWorldRotation = m_ARCamera.transform.rotation * tagPose.Rotation;
+        
+        if (m_EnableLogging)
+        {
+            Debug.Log($"[AprilTagViz] Tag {m_TagId} UPDATE AFTER TransformPoint:");
+            Debug.Log($"  New World Position: {newWorldPosition}");
+            Debug.Log($"  Distance from Camera: {Vector3.Distance(newWorldPosition, m_ARCamera.transform.position):F4}m");
+            Debug.Log($"  Expected distance (magnitude of camera-relative): {tagPose.Position.magnitude:F4}m");
+        }
+        
+        transform.position = newWorldPosition;
+        transform.rotation = newWorldRotation;
         
         // Apply scale
         transform.localScale = Vector3.one * m_Scale;
@@ -176,11 +265,10 @@ public class AprilTagVisualization : MonoBehaviour
             
             if (positionDelta > 0.01f || rotationDelta > 1f)
             {
-                Debug.Log($"[AprilTagViz] Tag {m_TagId} UPDATED:");
-                Debug.Log($"  Position: {transform.position} (delta: {positionDelta:F4}m)");
-                Debug.Log($"  Rotation: {transform.rotation.eulerAngles} (delta: {rotationDelta:F2}°)");
-                Debug.Log($"  TagPose.Position: {tagPose.Position}");
-                Debug.Log($"  TagPose.Rotation: {tagPose.Rotation.eulerAngles}");
+                Debug.Log($"[AprilTagViz] Tag {m_TagId} FINAL:");
+                Debug.Log($"  World Position: {transform.position}");
+                Debug.Log($"  Position Delta from last: {positionDelta:F4}m");
+                Debug.Log($"  Rotation Delta from last: {rotationDelta:F2}°)");
             }
         }
 
