@@ -169,13 +169,17 @@ public class AprilTagVisualization : MonoBehaviour
             }
         }
 
-        // Set the initial position
+        // Set the initial position and scale
         UpdatePosition(tagPose);
+        
+        // Set scale once during initialization (don't reapply every frame to avoid flickering)
+        transform.localScale = Vector3.one * m_Scale;
 
         if (m_EnableLogging)
         {
             Debug.Log($"[AprilTagViz] World Position: {transform.position}");
             Debug.Log($"[AprilTagViz] World Rotation: {transform.rotation.eulerAngles}");
+            Debug.Log($"[AprilTagViz] Scale: {m_Scale}");
         }
 
         // Update the tag ID text
@@ -209,14 +213,9 @@ public class AprilTagVisualization : MonoBehaviour
                 Debug.Log($"  Distance from current camera: {Vector3.Distance(m_FixedWorldPosition, m_ARCamera.transform.position):F4}m");
             }
             
-            // Keep the fixed world position
-            transform.position = m_FixedWorldPosition;
-            transform.rotation = m_FixedWorldRotation;
-            
-            // Apply scale
-            transform.localScale = Vector3.one * m_Scale;
-            
-            // Update canvas to face the camera
+            // Keep the fixed world position and rotation (don't reapply to avoid flickering)
+            // Position and rotation were already set during initialization
+            // Only update the canvas to face the camera
             if (m_TagCanvas != null)
             {
                 m_TagCanvas.transform.LookAt(m_ARCamera.transform);
@@ -241,7 +240,8 @@ public class AprilTagVisualization : MonoBehaviour
         // Transform position from camera-relative to world space
         // TagPose.Position and TagPose.Rotation are in camera-local coordinates
         Vector3 newWorldPosition = m_ARCamera.transform.TransformPoint(tagPose.Position);
-        Quaternion newWorldRotation = m_ARCamera.transform.rotation * tagPose.Rotation;
+        // Keep the model upright instead of using the tag's rotation
+        Quaternion newWorldRotation = Quaternion.identity;
         
         if (m_EnableLogging)
         {
@@ -254,8 +254,7 @@ public class AprilTagVisualization : MonoBehaviour
         transform.position = newWorldPosition;
         transform.rotation = newWorldRotation;
         
-        // Apply scale
-        transform.localScale = Vector3.one * m_Scale;
+        // Scale is set once during initialization, not every frame (to avoid flickering)
 
         // Log if position or rotation changed significantly
         if (m_EnableLogging)
