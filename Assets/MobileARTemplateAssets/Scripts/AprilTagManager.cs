@@ -518,8 +518,10 @@ public class AprilTagManager : MonoBehaviour
         
         // Calculate initial world position
         Vector3 initialWorldPosition = m_ARCamera.transform.TransformPoint(adjustedPosition);
-        // Keep the model upright (identity rotation) instead of using tag's rotation
-        Quaternion initialWorldRotation = Quaternion.identity;
+        // Transform rotation from camera space to world space
+        // Apply the tag's rotation and make it face up (rotate around X-axis by -90 degrees)
+        Quaternion cameraSpaceRotation = tagPose.Rotation * Quaternion.Euler(-90, 0, 0);
+        Quaternion initialWorldRotation = m_ARCamera.transform.rotation * cameraSpaceRotation;
         
         if (m_ShowDebugInfo && m_VisualizationOffset != Vector3.zero)
         {

@@ -4975,9 +4975,9 @@ MonoBehaviour:
   m_LostTagPersistenceFrames: 30
   m_ShowDebugInfo: 0
   m_ShowDetailedLogging: 0
-  m_AnchorWorldToFirstTag: 1
+  m_AnchorWorldToFirstTag: 0
   m_VisualizationOffset: {x: 0, y: -0.3, z: 1.1}
-  m_ShowOriginMarker: 1
+  m_ShowOriginMarker: 0
   m_OriginMarkerHeight: 0.1
   m_ShowCameraMarker: 0
 --- !u!4 &1308386614

@@ -213,9 +213,14 @@ public class AprilTagVisualization : MonoBehaviour
                 Debug.Log($"  Distance from current camera: {Vector3.Distance(m_FixedWorldPosition, m_ARCamera.transform.position):F4}m");
             }
             
-            // Keep the fixed world position and rotation (don't reapply to avoid flickering)
-            // Position and rotation were already set during initialization
-            // Only update the canvas to face the camera
+            // Set the fixed world position and rotation (only if they've changed to avoid jitter)
+            if (transform.position != m_FixedWorldPosition || transform.rotation != m_FixedWorldRotation)
+            {
+                transform.position = m_FixedWorldPosition;
+                transform.rotation = m_FixedWorldRotation;
+            }
+            
+            // Update canvas to face the camera
             if (m_TagCanvas != null)
             {
                 m_TagCanvas.transform.LookAt(m_ARCamera.transform);
@@ -240,8 +245,10 @@ public class AprilTagVisualization : MonoBehaviour
         // Transform position from camera-relative to world space
         // TagPose.Position and TagPose.Rotation are in camera-local coordinates
         Vector3 newWorldPosition = m_ARCamera.transform.TransformPoint(tagPose.Position);
-        // Keep the model upright instead of using the tag's rotation
-        Quaternion newWorldRotation = Quaternion.identity;
+        // Transform rotation from camera space to world space
+        // Apply the tag's rotation and make it face up (rotate around X-axis by -90 degrees)
+        Quaternion cameraSpaceRotation = tagPose.Rotation * Quaternion.Euler(-90, 0, 0);
+        Quaternion newWorldRotation = m_ARCamera.transform.rotation * cameraSpaceRotation;
         
         if (m_EnableLogging)
         {
