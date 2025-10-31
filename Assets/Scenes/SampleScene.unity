@@ -1188,7 +1188,7 @@ PrefabInstance:
       addedObject: {fileID: 1553500804}
     - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1553500805}
+      addedObject: {fileID: 1553500811}
   m_SourcePrefab: {fileID: 100100000, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
 --- !u!114 &331264286 stripped
 MonoBehaviour:
@@ -4958,7 +4958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1308386613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6289,10 +6289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SerializedLibrary: {fileID: 11400000, guid: c3ccc207fb798495e9b792a49bb0e0f5, type: 2}
+  m_SerializedLibrary: {fileID: 11400000, guid: 87570c005d9c641278412ca544f9f3de, type: 2}
   m_MaxNumberOfMovingImages: 2
-  m_TrackedImagePrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
---- !u!114 &1553500805
+  m_TrackedImagePrefab: {fileID: 0}
+--- !u!114 &1553500811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6301,16 +6301,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1553500799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a7e9f3c5d4b2e1a9c8f7d6e5a4b3c2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 55bcdad96e45b4b21b1643e517a0dd29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedImageManager: {fileID: 0}
-  m_ARCamera: {fileID: 331264287}
   m_ModelPrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
-  m_ModelOffset: {x: 0, y: 0.3, z: 0}
-  m_ModelRotationOffset: {x: 0, y: 0, z: 0}
-  m_ModelScale: 1
-  m_ShowDebugInfo: 1
+  m_ModelOffset: {x: 0, y: 0, z: 0}
+  m_RotationOffset: {x: 0, y: 0, z: 0}
+  m_Scale: 1
+  m_ShowDebug: 1
 --- !u!1 &1756045394
 GameObject:
   m_ObjectHideFlags: 0
@@ -6533,7 +6532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1851633937
 Transform:
   m_ObjectHideFlags: 0
