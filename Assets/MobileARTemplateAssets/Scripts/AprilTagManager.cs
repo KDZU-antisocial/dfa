@@ -157,6 +157,19 @@ public class AprilTagManager : MonoBehaviour
     }
 
     [SerializeField]
+    [Tooltip("Position offset to apply to the visualization (in camera-relative coordinates before transformation).")]
+    Vector3 m_VisualizationOffset = Vector3.zero;
+
+    /// <summary>
+    /// Position offset to apply to the visualization.
+    /// </summary>
+    public Vector3 visualizationOffset
+    {
+        get => m_VisualizationOffset;
+        set => m_VisualizationOffset = value;
+    }
+
+    [SerializeField]
     [Tooltip("Spawn a debug marker at world origin (0,0,0).")]
     bool m_ShowOriginMarker = false;
 
@@ -235,6 +248,12 @@ public class AprilTagManager : MonoBehaviour
 
     void Start()
     {
+        // Clear any previously stored anchor positions on app start
+        m_TagWorldPositions.Clear();
+        m_TagWorldRotations.Clear();
+        m_TrackedTags.Clear();
+        m_LostTagFrameCount.Clear();
+        
         InitializeDetector();
         UpdateOriginMarker();
         UpdateCameraMarker();
@@ -258,6 +277,12 @@ public class AprilTagManager : MonoBehaviour
     void OnDestroy()
     {
         m_Detector?.Dispose();
+        
+        // Clear all tracked tags and anchored positions
+        m_TrackedTags.Clear();
+        m_TagWorldPositions.Clear();
+        m_TagWorldRotations.Clear();
+        m_LostTagFrameCount.Clear();
     }
 
     void InitializeDetector()
@@ -488,9 +513,17 @@ public class AprilTagManager : MonoBehaviour
             visualization = tagObject.AddComponent<AprilTagVisualization>();
         }
 
+        // Apply offset to the camera-relative position
+        Vector3 adjustedPosition = tagPose.Position + m_VisualizationOffset;
+        
         // Calculate initial world position
-        Vector3 initialWorldPosition = m_ARCamera.transform.TransformPoint(tagPose.Position);
+        Vector3 initialWorldPosition = m_ARCamera.transform.TransformPoint(adjustedPosition);
         Quaternion initialWorldRotation = m_ARCamera.transform.rotation * tagPose.Rotation;
+        
+        if (m_ShowDebugInfo && m_VisualizationOffset != Vector3.zero)
+        {
+            Debug.Log($"[AprilTagMgr] Original camera-relative: {tagPose.Position}, Offset: {m_VisualizationOffset}, Adjusted: {adjustedPosition}");
+        }
         
         // If anchoring is enabled, use fixed world positioning
         if (m_AnchorWorldToFirstTag)
@@ -706,7 +739,7 @@ public class AprilTagManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Clear all tracked AprilTags.
+    /// Clear all tracked AprilTags and reset anchor positions.
     /// </summary>
     public void ClearAllAprilTags()
     {
@@ -718,6 +751,14 @@ public class AprilTagManager : MonoBehaviour
             }
         }
         m_TrackedTags.Clear();
+        m_TagWorldPositions.Clear();
+        m_TagWorldRotations.Clear();
+        m_LostTagFrameCount.Clear();
+        
+        if (m_ShowDebugInfo)
+        {
+            Debug.Log("[AprilTagMgr] Cleared all tags and reset anchors");
+        }
     }
 
     /// <summary>
