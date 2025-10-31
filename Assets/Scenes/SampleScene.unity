@@ -4976,7 +4976,7 @@ MonoBehaviour:
   m_ShowDebugInfo: 1
   m_ShowDetailedLogging: 0
   m_AnchorWorldToFirstTag: 1
-  m_VisualizationOffset: {x: 0, y: -0.25, z: 0.5}
+  m_VisualizationOffset: {x: 0, y: -0.25, z: 1}
   m_ShowOriginMarker: 1
   m_OriginMarkerHeight: 0.1
   m_ShowCameraMarker: 0
