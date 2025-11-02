@@ -1189,6 +1189,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1553500811}
+    - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1553500812}
   m_SourcePrefab: {fileID: 100100000, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
 --- !u!114 &331264286 stripped
 MonoBehaviour:
@@ -6290,7 +6293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SerializedLibrary: {fileID: 11400000, guid: 87570c005d9c641278412ca544f9f3de, type: 2}
-  m_MaxNumberOfMovingImages: 2
+  m_MaxNumberOfMovingImages: 4
   m_TrackedImagePrefab: {fileID: 0}
 --- !u!114 &1553500811
 MonoBehaviour:
@@ -6310,6 +6313,21 @@ MonoBehaviour:
   m_RotationOffset: {x: 0, y: 0, z: 0}
   m_Scale: 1
   m_ShowDebug: 1
+--- !u!114 &1553500812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553500799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9c8e6d5a4f3c2e1b0d9f8a7c6e5d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxNumberOfMovingImages: 2
+  m_EnableAutomaticImageScaleEstimation: 1
+  m_MinimumDetectionQuality: 0.3
 --- !u!1 &1756045394
 GameObject:
   m_ObjectHideFlags: 0
