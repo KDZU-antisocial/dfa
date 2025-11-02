@@ -95,8 +95,8 @@ public class SimpleImageTracking : MonoBehaviour
     
     void Update()
     {
-        // Periodically log tracking status
-        if (m_TrackedImageManager != null && Time.frameCount % 120 == 0) // Every 2 seconds at 60fps
+        // Periodically log tracking status (optimized: every 2 seconds)
+        if (m_ShowDebug && m_TrackedImageManager != null && Time.frameCount % 120 == 0)
         {
             int trackingCount = 0;
             foreach (var trackedImage in m_TrackedImageManager.trackables)

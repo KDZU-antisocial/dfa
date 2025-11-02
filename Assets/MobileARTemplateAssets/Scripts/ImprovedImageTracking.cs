@@ -20,9 +20,9 @@ public class ImprovedImageTracking : MonoBehaviour
 
     [Header("Detection Quality")]
     [SerializeField]
-    [Tooltip("Minimum quality threshold for detection (0-1). Higher = more strict.")]
+    [Tooltip("Minimum quality threshold for detection (0-1). Higher = more strict. Optimized: 0.2")]
     [Range(0f, 1f)]
-    float m_MinimumDetectionQuality = 0.3f;
+    float m_MinimumDetectionQuality = 0.2f;
 
     private ARTrackedImageManager m_ImageManager;
     private ARSession m_ARSession;
@@ -71,6 +71,9 @@ public class ImprovedImageTracking : MonoBehaviour
         }
     }
 
+    private int m_FrameCounter = 0;
+    private const int QualityCheckInterval = 10; // Check quality every 10 frames (optimized)
+
     void OnImagesChanged(ARTrackedImagesChangedEventArgs args)
     {
         // Filter out low-quality detections
@@ -79,10 +82,14 @@ public class ImprovedImageTracking : MonoBehaviour
             LogImageQuality(image, "Added");
         }
 
+        // Optimize: Only check quality every N frames to reduce overhead
+        m_FrameCounter++;
+        bool shouldCheckQuality = (m_FrameCounter % QualityCheckInterval == 0);
+
         foreach (var image in args.updated)
         {
             // Only show visible images with good tracking
-            if (image.trackingState == TrackingState.Tracking)
+            if (image.trackingState == TrackingState.Tracking && shouldCheckQuality)
             {
                 // Check if quality is acceptable (using approximate angle detection)
                 float quality = EstimateTrackingQuality(image);
@@ -133,8 +140,8 @@ public class ImprovedImageTracking : MonoBehaviour
     // Reset to normal sensitivity
     public void ResetDetectionSensitivity()
     {
-        m_MinimumDetectionQuality = 0.3f;
-        Debug.Log("[ImprovedTracking] ↩️ Detection sensitivity reset to normal");
+        m_MinimumDetectionQuality = 0.2f; // Optimized default
+        Debug.Log("[ImprovedTracking] ↩️ Detection sensitivity reset to optimized (0.2)");
     }
 }
 

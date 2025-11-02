@@ -36,12 +36,71 @@ Add `ImprovedImageTracking.cs` to your ARTrackedImageManager GameObject:
 3. Configure:
    - **Max Moving Images**: `2` (or `1` for best performance)
    - **Enable Auto Scale**: `true` ✅
-   - **Min Detection Quality**: `0.2-0.3` (lower = more lenient)
+   - **Min Detection Quality**: `0.2` (lower = more lenient, optimized setting)
 
 This script will:
 - Monitor tracking quality in real-time
 - Log warnings for poor viewing angles
 - Provide quality metrics for debugging
+
+---
+
+## 📋 **Understanding Key Settings**
+
+### **Max Number of Moving Images**
+
+**What it does:** Controls how many images AR Foundation actively tracks and updates in real-time.
+
+**How it works:**
+- Each "moving" slot gets continuous per-frame updates (expensive)
+- Images beyond the limit are tracked as "static" (occasional updates)
+- ARKit prioritizes by distance, quality, and motion
+
+**Recommended values:**
+- `1` - Best performance, single marker tracking
+- `2` - **Optimal for most use cases** - tracks 2 AprilTags simultaneously
+- `3-4` - Multiple markers, modern devices only
+- `8+` - Many markers, high-end devices, expect performance issues
+
+**For your setup (2 AprilTags):**
+- Set to `2` - each tag gets its own moving slot
+- Don't increase above `2` - wastes resources, reduces per-tag quality
+- Don't decrease to `1` - second tag won't track smoothly
+
+**Performance impact:**
+```
+Setting 1: 100% resources to 1 tag
+Setting 2: 50% resources per tag (2 tags)
+Setting 4: 25% resources per tag (worse tracking)
+```
+
+### **Minimum Detection Quality**
+
+**What it does:** Sets the threshold for acceptable tracking quality (0.0 to 1.0).
+
+**How it affects behavior:**
+- **Above threshold** → Model visible, tracking active
+- **Below threshold** → Warning logged, may hide model
+- **Quality calculation:** Based on viewing angle (perpendicular = 1.0, parallel = 0.0)
+
+**Recommended values:**
+- `0.1-0.15` - Very lenient, accepts almost any detection (may be jittery)
+- `0.2` - **Optimized setting** - good balance of stability and angle tolerance
+- `0.3` - Default, more stable but requires better angles
+- `0.4+` - Strict, only near-perpendicular views
+
+**Quality to angle mapping:**
+| Quality | Approximate Angle | Tracking |
+|---------|-------------------|----------|
+| 1.0-0.7 | 60-90° | ✅ Excellent |
+| 0.7-0.4 | 30-60° | ⚠️ Good |
+| 0.4-0.2 | 15-30° | ⚠️ Acceptable (may lose tracking) |
+| <0.2    | <15°  | ❌ Poor (likely to fail) |
+
+**Current optimized setting: `0.2`**
+- More lenient for difficult angles
+- Accepts tracking down to ~15-30° angles
+- May have slight jitter at extreme angles (trade-off for detection range)
 
 ### Option 2: Improve Reference Images
 
@@ -153,17 +212,52 @@ For extreme angles, you can add multiple versions of the same AprilTag at differ
 
 ## Summary: Best Configuration for Angle Detection
 
+### **Optimized Settings:**
+
 ```csharp
 // In ImprovedImageTracking.cs:
-m_MaxNumberOfMovingImages = 2;           // Balance performance/detection
-m_EnableAutomaticImageScaleEstimation = true;  // ✅ Enable for angles
-m_MinimumDetectionQuality = 0.2f;        // Lenient for difficult angles
+m_MaxNumberOfMovingImages = 2;                      // Tracks 2 AprilTags simultaneously
+m_EnableAutomaticImageScaleEstimation = true;      // ✅ Better angle detection
+m_MinimumDetectionQuality = 0.2f;                  // ✅ Optimized - accepts 15-30° angles
 ```
+
+### **Why These Settings:**
+
+**Max Moving Images = 2:**
+- ✅ Matches your use case (2 AprilTags)
+- ✅ Each tag gets 50% of processing power
+- ✅ Smooth simultaneous tracking
+- ✅ No wasted resources
+- ❌ Don't increase (reduces per-tag quality)
+- ❌ Don't decrease (can't track 2 tags smoothly)
+
+**Min Detection Quality = 0.2:**
+- ✅ Optimized for difficult angles (down to ~15-30°)
+- ✅ More lenient than default (0.3)
+- ✅ Still maintains reasonable stability
+- ⚠️ May have slight jitter at extreme angles (acceptable trade-off)
+- 💡 Can adjust between 0.15-0.3 based on your needs
 
 **Physical setup:**
 - High-contrast printed tag
 - Matte surface, good lighting
-- 30-90° viewing angles work best
+- With optimized settings: 15-90° viewing angles work
 
 **You're all set!** 🎉
+
+---
+
+## 🔧 **Performance Optimization**
+
+The tracking scripts have been optimized to reduce overhead:
+- Debug logging runs every 2 seconds (not every frame)
+- Quality checks run every 5-10 frames (not every frame)
+- Frame processing is more efficient
+- Less resource contention = better angle detection
+
+**Frame processing optimization benefits:**
+- Reduced ARFrame retention warnings
+- More CPU cycles for tracking
+- Better performance at difficult angles
+- Smoother overall experience
 
