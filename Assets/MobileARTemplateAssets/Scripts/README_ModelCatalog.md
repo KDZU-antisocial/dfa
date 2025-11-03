@@ -21,6 +21,34 @@ When the camera detects AprilTag "0", it spawns the Coyote model. When it detect
 
 ---
 
+## 🏷️ **AprilTag Information**
+
+### **Tag Family Used**
+
+This project uses **`tagStandard41h12`** AprilTags.
+
+- **Available IDs:** 0 to 2,114 (2,115 total unique tags)
+- **Generation Tool:** [https://chaitanyantr.github.io/apriltag.html](https://chaitanyantr.github.io/apriltag.html)
+- **Recommended Size:** 90mm (0.09 meters)
+
+### **Generating AprilTags**
+
+1. Visit: [https://chaitanyantr.github.io/apriltag.html](https://chaitanyantr.github.io/apriltag.html)
+2. Select **Tag Family:** `tagStandard41h12`
+3. Enter **Tag ID:** `0`, `1`, `2`, ... up to `2114`
+4. Set **Total Size:** `90mm`
+5. Download as **SVG** or **PDF**
+6. Print at 100% scale (verify with ruler!)
+
+### **Why tagStandard41h12?**
+
+- ✅ 2,115 unique IDs (perfect for large catalogs)
+- ✅ Good balance between size and error correction
+- ✅ Reliable detection in AR Foundation
+- ✅ Industry-standard format
+
+---
+
 ## 📦 **Step-by-Step Setup**
 
 ### **Step 1: Create the Catalog Asset**
@@ -59,9 +87,9 @@ When the camera detects AprilTag "0", it spawns the Coyote model. When it detect
        Model Prefab: [Drag your CoyoteModel prefab here]
      Optional Settings:
        Enabled: ✓
-       Custom Offset: (0, 0, 0)
+       Custom Offset: (0, 0.1, 0)     ← 10cm above tag (default)
        Custom Rotation: (0, 0, 0)
-       Custom Scale: 1
+       Custom Scale: 1                 ← Normal size (default)
      Metadata:
        Notes: "A coyote in mid-leap pose"
    
@@ -73,6 +101,8 @@ When the camera detects AprilTag "0", it spawns the Coyote model. When it detect
        Model Prefab: [Drag your FoxModel prefab here]
      Optional Settings:
        Enabled: ✓
+       Custom Offset: (0, 0.1, 0)     ← Defaults are already set!
+       Custom Scale: 1
        ...
    ```
 

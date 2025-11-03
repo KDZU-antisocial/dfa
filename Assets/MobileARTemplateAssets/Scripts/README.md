@@ -107,7 +107,7 @@ Scene Setup:
 │  ├─ SimpleImageTracking (Main tracker)
 │  │  ├─ Model Catalog: AprilTagModelCatalog.asset (maps tags→models)
 │  │  ├─ Model Prefab: AprilTagPrefab (fallback)
-│  │  ├─ Model Offset: (0, 0.3, 0)
+│  │  ├─ Model Offset: (0, 0.1, 0) [default if no catalog]
 │  │  └─ Show Debug: True
 │  └─ ImprovedImageTracking (Performance monitor)
 │     ├─ Max Moving Images: 2
@@ -121,18 +121,44 @@ Project Assets:
 └─ AprilTagModelCatalog.asset (100 tag→model mappings)
 ```
 
+### **AprilTag Generation**
+
+**Tag Family:** `tagStandard41h12` (2,115 unique IDs available)
+
+**Generator Tool:** [https://chaitanyantr.github.io/apriltag.html](https://chaitanyantr.github.io/apriltag.html)
+
+**To generate new AprilTags:**
+1. Visit the [AprilTag generator](https://chaitanyantr.github.io/apriltag.html)
+2. Select **Tag Family:** `tagStandard41h12`
+3. Enter **Tag ID:** `0`, `1`, `2`, etc. (0-2114 available)
+4. Set **Total Size:** `90mm` (recommended for AR tracking)
+5. Click **Save as SVG** or print to PDF
+6. Print the tag at exact size (verify with ruler!)
+
+**Why tagStandard41h12?**
+- ✅ 2,115 unique IDs (plenty for large catalogs)
+- ✅ Good detection performance
+- ✅ Balanced between data density and error correction
+- ✅ Well-supported by AR Foundation
+
+**Printing Tips:**
+- Print at 100% scale (no fit-to-page)
+- Use matte paper (reduces glare)
+- Measure printed tag with ruler to verify size
+- Mount on rigid backing for better tracking
+
 ### **Reference Image Library**
 
 Located at: `Assets/ReferenceImageLibrary.asset`
 
 Contains:
-- AprilTag #0 (0.09m x 0.09m)
-- AprilTag #1 (0.09m x 0.09m)
+- AprilTag #0 (tagStandard41h12, 0.09m x 0.09m)
+- AprilTag #1 (tagStandard41h12, 0.09m x 0.09m)
 
 **To update:**
 1. In Unity, select `ReferenceImageLibrary.asset`
 2. Add/modify images in the Inspector
-3. Set physical size to match printed tags
+3. Set physical size to match printed tags (0.09 = 90mm)
 4. Rebuild the project
 
 ---

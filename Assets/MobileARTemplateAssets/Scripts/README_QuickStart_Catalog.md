@@ -6,6 +6,26 @@
 
 ---
 
+## 🏷️ **Before You Start: Generate AprilTags**
+
+This project uses **`tagStandard41h12`** AprilTags (2,115 unique IDs available).
+
+### **Generate Tags:**
+1. Visit: [https://chaitanyantr.github.io/apriltag.html](https://chaitanyantr.github.io/apriltag.html)
+2. Select **Tag Family:** `tagStandard41h12`
+3. Enter **Tag ID:** `0` through `99` (or more)
+4. Set **Total Size:** `90mm` (recommended)
+5. Download as **SVG** or **PDF**
+6. Print at **100% scale** (verify with ruler!)
+
+### **Add to Unity:**
+1. Save each tag as PNG/JPG (e.g., `0.png`, `1.png`)
+2. Import into Unity
+3. Add to your **Reference Image Library** (see IMAGE_TRACKING_SETUP.md)
+4. Set physical size: `0.09` (meters) = 90mm
+
+---
+
 ## ⚡ **3-Step Setup**
 
 ### **Step 1: Create the Catalog** (Unity Editor)

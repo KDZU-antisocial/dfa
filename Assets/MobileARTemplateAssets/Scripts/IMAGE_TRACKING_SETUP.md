@@ -40,12 +40,28 @@ This guide will help you switch from AprilTag detection to AR Foundation's nativ
 
 ### Step 2: Add Your AprilTag Images to the Library
 
-#### A. Prepare AprilTag Images
+#### A. Generate AprilTag Images
 
-You need a photo of your physical AprilTag:
-- Take a clear, well-lit photo of each AprilTag you want to track
+**This project uses `tagStandard41h12` AprilTags.**
+
+**Generate your tags:**
+1. Visit: [https://chaitanyantr.github.io/apriltag.html](https://chaitanyantr.github.io/apriltag.html)
+2. Settings:
+   - **Tag Family:** `tagStandard41h12` (2,115 unique IDs)
+   - **Tag ID:** `0`, `1`, `2`, etc. (any number 0-2114)
+   - **Total Size:** `90mm` (recommended for AR tracking)
+3. Click **Save as SVG** or print to PDF
+4. Convert to PNG/JPG for Unity (or take a photo of printed tag)
+
+**Printing tips:**
+- Print at 100% scale (verify with ruler!)
+- Use matte paper (reduces glare)
+- Mount on rigid backing for better tracking
+
+**Alternative:** Take a clear photo of your printed AprilTag:
+- Well-lit, no shadows
+- Square crop showing just the tag
 - Save as PNG or JPG
-- Image should be square and show just the tag (no background if possible)
 
 #### B. Import Images into Unity
 
@@ -59,14 +75,15 @@ You need a photo of your physical AprilTag:
 2. In the Inspector, click **"Add Image"**
 3. For each image:
    - **Texture**: Drag your AprilTag image
-   - **Name**: Give it a name (e.g., "AprilTag_0", "Tag1", etc.)
+   - **Name**: Give it a name matching the tag ID (e.g., "0", "1", "2")
+   - **Specify Size**: ✅ Check this
    - **Physical Size**: Enter the real-world size in meters
-     - Example: 5cm tag = **0.05**
-     - Example: 10cm tag = **0.10**
+     - Standard: 90mm tag = **0.09** (recommended)
+     - Or: 5cm tag = **0.05**, 10cm tag = **0.10**
    - **Keep Texture at Runtime**: ✅ Check this
 4. Repeat for each AprilTag you want to track
 
-**Important**: The physical size MUST match your real printed tag size!
+**Important**: The physical size MUST match your real printed tag size! Measure with a ruler.
 
 ---
 
