@@ -6308,6 +6308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedImageManager: {fileID: 0}
+  m_ModelCatalog: {fileID: 11400000, guid: 6160ead7d51e74ee9a2b09f820148141, type: 2}
   m_ModelPrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
   m_ModelOffset: {x: 0, y: 0, z: 0}
   m_RotationOffset: {x: 0, y: 0, z: 0}

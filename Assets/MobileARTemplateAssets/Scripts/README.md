@@ -8,6 +8,10 @@ This folder contains all scripts for AR image tracking and AprilTag detection in
 - 📖 [**IMAGE_TRACKING_SETUP.md**](IMAGE_TRACKING_SETUP.md) - Complete setup guide for AR Foundation image tracking
 - 📖 [**SETUP_GUIDE.md**](SETUP_GUIDE.md) - Alternative setup guide with reference image library creation
 
+### **Model Management**
+- ⚡ [**README_QuickStart_Catalog.md**](README_QuickStart_Catalog.md) - **Quick start** for mapping tags to models
+- 📚 [**README_ModelCatalog.md**](README_ModelCatalog.md) - Complete catalog system guide
+
 ### **Performance & Optimization**
 - ⚡ [**README_Performance.md**](README_Performance.md) - Performance optimizations and configuration guide
 - 📐 [**ANGLE_DETECTION_TIPS.md**](ANGLE_DETECTION_TIPS.md) - Improving detection at difficult angles
@@ -50,6 +54,7 @@ Your project is configured to use Unity's AR Foundation for image tracking. This
 |--------|---------|---------------|
 | `SimpleImageTracking.cs` | Main AR Foundation image tracking | [IMAGE_TRACKING_SETUP.md](IMAGE_TRACKING_SETUP.md) |
 | `ImprovedImageTracking.cs` | Performance monitoring & quality checks | [README_Performance.md](README_Performance.md) |
+| `AprilTagModelCatalog.cs` | ScriptableObject: Maps tags to models | [README_ModelCatalog.md](README_ModelCatalog.md) |
 | `AprilTagImageTracking.cs` | Hybrid AprilTag + Image tracking (optional) | [APRILTAG_IMAGE_TRACKING_SETUP.md](APRILTAG_IMAGE_TRACKING_SETUP.md) |
 
 ### **Legacy AprilTag System** (Not Currently Active)
@@ -100,7 +105,8 @@ Scene Setup:
 │  │  ├─ Max Moving Images: 2
 │  │  └─ Tracked Image Prefab: None (handled by script)
 │  ├─ SimpleImageTracking (Main tracker)
-│  │  ├─ Model Prefab: AprilTagPrefab
+│  │  ├─ Model Catalog: AprilTagModelCatalog.asset (maps tags→models)
+│  │  ├─ Model Prefab: AprilTagPrefab (fallback)
 │  │  ├─ Model Offset: (0, 0.3, 0)
 │  │  └─ Show Debug: True
 │  └─ ImprovedImageTracking (Performance monitor)
@@ -109,6 +115,10 @@ Scene Setup:
 │     └─ Min Detection Quality: 0.2
 └─ AprilTag Setup (Disabled)
    └─ Old AprilTag system (inactive)
+
+Project Assets:
+├─ ReferenceImageLibrary.asset (100 AprilTag images)
+└─ AprilTagModelCatalog.asset (100 tag→model mappings)
 ```
 
 ### **Reference Image Library**
@@ -129,12 +139,26 @@ Contains:
 
 ## 🚀 **Common Tasks**
 
-### **Add a New AprilTag**
-1. Open `Assets/ReferenceImageLibrary.asset`
-2. Click "Add Image"
-3. Drag your AprilTag image (PNG/JPG)
-4. Set "Specify Size" and enter physical dimensions (e.g., 0.09 for 9cm)
-5. Rebuild project
+### **Add a New AprilTag with Custom Model**
+1. **Add to Reference Library:**
+   - Open `Assets/ReferenceImageLibrary.asset`
+   - Click "Add Image"
+   - Drag your AprilTag image (PNG/JPG)
+   - Set name (e.g., "0", "1", "2")
+   - Set "Specify Size" to physical dimensions (e.g., 0.09 for 9cm)
+
+2. **Add to Model Catalog:**
+   - Open `Assets/AprilTagModelCatalog.asset`
+   - Increase "Size" by 1
+   - Fill in new entry:
+     - AprilTag Name: (match Reference Library, e.g., "0")
+     - Descriptive Name: (e.g., "Leaping Coyote")
+     - Model Prefab: (drag your model prefab)
+   - Enable: ✓
+
+3. **Rebuild project**
+
+📖 **See:** [README_ModelCatalog.md](README_ModelCatalog.md) for detailed catalog setup
 
 ### **Adjust Detection Sensitivity**
 1. Select `XR Origin (AR Rig)` GameObject

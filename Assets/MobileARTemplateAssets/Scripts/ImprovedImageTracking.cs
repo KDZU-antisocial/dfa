@@ -39,8 +39,8 @@ public class ImprovedImageTracking : MonoBehaviour
     {
         if (m_ImageManager == null) return;
 
-        // Set max moving images
-        m_ImageManager.maxNumberOfMovingImages = m_MaxNumberOfMovingImages;
+        // Set max moving images (using updated API)
+        m_ImageManager.requestedMaxNumberOfMovingImages = m_MaxNumberOfMovingImages;
         
         Debug.Log($"[ImprovedTracking] ⚙️ Configured:");
         Debug.Log($"  - Max Moving Images: {m_MaxNumberOfMovingImages}");
