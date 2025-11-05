@@ -1,10 +1,30 @@
 # AprilTag Integration for AR Foundation
 
-This document explains how to use the AprilTag tracking system that has been integrated into your AR Foundation project.
+> **⚠️ NOTE:** This document describes the **legacy AprilTag detection system** that is currently **disabled** in your project.
+> 
+> **Current System:** Your project now uses **AR Foundation's native image tracking** for AprilTag detection, which provides better performance and integration.
+>
+> 📖 **See:** [README.md](README.md) for current system documentation
+
+---
 
 ## Overview
 
-The AprilTag integration provides robust marker-based tracking for AR applications. AprilTags are 2D barcode-like markers that can be detected and tracked by the camera, providing precise pose estimation for AR content placement.
+This legacy AprilTag integration provided custom marker-based tracking for AR applications. AprilTags are 2D barcode-like markers that can be detected and tracked by the camera.
+
+**Status:** ⚠️ **Disabled** - Replaced by AR Foundation image tracking
+
+**Why Changed:**
+- ✅ AR Foundation provides native ARKit/ARCore integration
+- ✅ Better tracking stability and performance
+- ✅ Automatic pose estimation
+- ✅ Built-in support for multiple tracked images
+- ✅ No custom detection code needed
+
+**Current System:**
+- Uses `ARTrackedImageManager` (AR Foundation)
+- Handled by `SimpleImageTracking.cs`
+- See [IMAGE_TRACKING_SETUP.md](IMAGE_TRACKING_SETUP.md) for setup
 
 ## Components
 
@@ -175,10 +195,69 @@ The AprilTag system can be integrated with your existing AR systems:
 - Use appropriate detection thresholds for your use case
 - Test on target devices for performance validation
 
+---
+
+## Migration to AR Foundation Image Tracking
+
+Your project has been migrated from this legacy system to AR Foundation's image tracking.
+
+### What Changed:
+
+**Old System (Disabled):**
+```
+AprilTagManager → AprilTagVisualization → Custom detection
+```
+
+**New System (Active):**
+```
+ARTrackedImageManager → SimpleImageTracking → AR Foundation detection
+```
+
+### Benefits:
+
+| Feature | Legacy System | AR Foundation |
+|---------|--------------|---------------|
+| Detection Method | Custom CV code | Native ARKit/ARCore |
+| Performance | Good | Excellent ✅ |
+| Angle Detection | Limited | Better ✅ |
+| Stability | Good | Excellent ✅ |
+| Setup Complexity | High | Low ✅ |
+| Maintenance | Required | Built-in ✅ |
+
+### How to Use AprilTags Now:
+
+1. **Add images to Reference Library:**
+   - Open `Assets/ReferenceImageLibrary.asset`
+   - Add your AprilTag images
+   - Set physical size (e.g., 0.09m for 9cm tags)
+
+2. **The system handles the rest automatically:**
+   - Detection via `ARTrackedImageManager`
+   - Tracking via `SimpleImageTracking`
+   - Model placement and rotation automatic
+
+3. **See documentation:**
+   - [README.md](README.md) - Scripts overview
+   - [IMAGE_TRACKING_SETUP.md](IMAGE_TRACKING_SETUP.md) - Setup guide
+   - [README_Performance.md](README_Performance.md) - Optimization
+
+---
+
+## Legacy System Reference
+
+The following information describes the **disabled** legacy system, kept for reference:
+
+---
+
 ## Support
 
-For issues or questions about the AprilTag integration:
-1. Check the Unity console for error messages
-2. Verify all components are properly configured
-3. Test with generated AprilTag images first
-4. Check the AprilTag package documentation for advanced features
+For issues or questions about the **current AR Foundation system**:
+1. See [README.md](README.md) for documentation
+2. Check [IMAGE_TRACKING_SETUP.md](IMAGE_TRACKING_SETUP.md) for setup
+3. Review [ANGLE_DETECTION_TIPS.md](ANGLE_DETECTION_TIPS.md) for angle issues
+4. Check Unity console for `[ImageTracking]` messages
+
+For legacy AprilTag system questions:
+1. This system is disabled and no longer maintained
+2. Consider using AR Foundation image tracking instead
+3. Legacy scripts remain in the project for reference only

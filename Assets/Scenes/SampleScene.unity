@@ -533,7 +533,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2512387470528047737, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
   m_PrefabInstance: {fileID: 331264285}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1553500799}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
@@ -1182,7 +1182,16 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2512387470890420967, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
       insertIndex: 0
       addedObject: {fileID: 436358034}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1553500804}
+    - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1553500811}
+    - targetCorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1553500812}
   m_SourcePrefab: {fileID: 100100000, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
 --- !u!114 &331264286 stripped
 MonoBehaviour:
@@ -4952,7 +4961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1308386613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4966,13 +4975,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ARCamera: {fileID: 331264287}
-  m_AprilTagPrefab: {fileID: 0}
+  m_AprilTagPrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
   m_AprilTagParent: {fileID: 373507733}
   m_FieldOfView: 60
   m_TagSize: 0.05
-  m_VisualizationScale: 0.05
+  m_VisualizationScale: 3
   m_MaxTrackedTags: 2
+  m_LostTagPersistenceFrames: 30
   m_ShowDebugInfo: 1
+  m_ShowDetailedLogging: 0
+  m_AnchorWorldToFirstTag: 0
+  m_VisualizationOffset: {x: 0, y: -0.3, z: 1.1}
+  m_ShowOriginMarker: 0
+  m_OriginMarkerHeight: 0.1
+  m_ShowCameraMarker: 0
 --- !u!4 &1308386614
 Transform:
   m_ObjectHideFlags: 0
@@ -6259,6 +6275,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1545687380}
   m_CullTransparentMesh: 1
+--- !u!1 &1553500799 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2512387470528047719, guid: 48cb3fb68c91eb94999fd99957eb0cae, type: 3}
+  m_PrefabInstance: {fileID: 331264285}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1553500804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553500799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedLibrary: {fileID: 11400000, guid: 87570c005d9c641278412ca544f9f3de, type: 2}
+  m_MaxNumberOfMovingImages: 4
+  m_TrackedImagePrefab: {fileID: 0}
+--- !u!114 &1553500811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553500799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55bcdad96e45b4b21b1643e517a0dd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedImageManager: {fileID: 0}
+  m_ModelCatalog: {fileID: 11400000, guid: 6160ead7d51e74ee9a2b09f820148141, type: 2}
+  m_ModelPrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
+  m_ModelOffset: {x: 0, y: 0, z: 0}
+  m_RotationOffset: {x: 0, y: 0, z: 0}
+  m_Scale: 1
+  m_ShowDebug: 1
+--- !u!114 &1553500812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553500799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b9c8e6d5a4f3c2e1b0d9f8a7c6e5d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxNumberOfMovingImages: 2
+  m_EnableAutomaticImageScaleEstimation: 1
+  m_MinimumDetectionQuality: 0.2
 --- !u!1 &1756045394
 GameObject:
   m_ObjectHideFlags: 0
@@ -6481,7 +6551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1851633937
 Transform:
   m_ObjectHideFlags: 0

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8d7c6b5a4f3e2d1c0b9a8f7e6d5c4b, type: 3}
+  m_Name: AprilTagModelCatalog
+  m_EditorClassIdentifier: 
+  mappings:
+  - aprilTagName: 0
+    descriptiveName: pyramid
+    modelPrefab: {fileID: 7657548977611231357, guid: 3cbfcd4079a5031478389d5ab3c8c311, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 1
+    descriptiveName: cylinder
+    modelPrefab: {fileID: 3745605318107395163, guid: daca7e1cd0a975941a64a8a9cbd8e5e5, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 2
+    descriptiveName: cube
+    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 3
+    descriptiveName: arch
+    modelPrefab: {fileID: 7279467769842343898, guid: b1b37ac0eaa6a9a4785fc1f26065e8b3, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  defaultModel: {fileID: 0}
