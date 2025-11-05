@@ -14,35 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mappings:
   - aprilTagName: 0
-    descriptiveName: AprilTag Prefab
-    modelPrefab: {fileID: 8163940722511287187, guid: 75c53eb66139b45929460567478ecf26, type: 3}
-    enabled: 1
-    customOffset: {x: 0, y: 0.1, z: 0}
-    customRotation: {x: 0, y: 0, z: 0}
-    customScale: 1
-    notes: 
-  - aprilTagName: 1
-    descriptiveName: Arch
-    modelPrefab: {fileID: 7279467769842343898, guid: b1b37ac0eaa6a9a4785fc1f26065e8b3, type: 3}
-    enabled: 1
-    customOffset: {x: 0, y: 0.1, z: 0}
-    customRotation: {x: 0, y: 0, z: 0}
-    customScale: 1
-    notes: 
-  - aprilTagName: 2
-    descriptiveName: Cube
-    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
-    enabled: 1
-    customOffset: {x: 0, y: 0.1, z: 0}
-    customRotation: {x: 0, y: 0, z: 0}
-    customScale: 1
-    notes: 
-  - aprilTagName: 3
-    descriptiveName: Pyramid
+    descriptiveName: pyramid
     modelPrefab: {fileID: 7657548977611231357, guid: 3cbfcd4079a5031478389d5ab3c8c311, type: 3}
     enabled: 1
-    customOffset: {x: 0, y: 0.1, z: 0}
+    customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 1
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 1
+    descriptiveName: cylinder
+    modelPrefab: {fileID: 3745605318107395163, guid: daca7e1cd0a975941a64a8a9cbd8e5e5, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 2
+    descriptiveName: cube
+    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
+    notes: 
+  - aprilTagName: 3
+    descriptiveName: arch
+    modelPrefab: {fileID: 7279467769842343898, guid: b1b37ac0eaa6a9a4785fc1f26065e8b3, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.5
     notes: 
   defaultModel: {fileID: 0}
