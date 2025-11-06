@@ -14,24 +14,17 @@ This Unity project uses your iPhone's camera to:
 3. **Track tags in real-time** as you move around them
 4. **Support multiple tags** simultaneously (currently configured for 4 tags)
 
-Perfect for:
-- 🎵 Record player vinyl labels with AR visualization
-- 🏷️ Interactive product labels
-- 🎨 AR art installations
-- 📦 Inventory visualization
-- 🎓 Educational demonstrations
-
 ## ⚡ Quick Start
 
 ### Prerequisites
 - **macOS** with Xcode installed
-- **Unity** (version used by this project)
+- **Unity** 2023 (probably works on other versions)
 - **iOS device** with ARKit support (iPhone 6s or newer)
 - **Apple Developer account** (for device deployment)
 
 ### 1. Generate Your AprilTags
 
-Use the companion repository to create 3D-printable AprilTag labels:
+Use our companion repository to create 3D-printable AprilTag labels:
 
 🔗 **[dfa-tags](https://github.com/KDZU-antisocial/dfa-tags)** - Converts AprilTag SVGs into 3D printer-ready 3MF tags
 
