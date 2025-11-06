@@ -40,7 +40,7 @@ Your project is configured to use Unity's AR Foundation for image tracking. This
 - `ImprovedImageTracking.cs` - Performance monitoring and optimization
 
 **Configuration:**
-- Max Moving Images: `2` (optimal for 2 AprilTags)
+- Max Moving Images: `4` (configured for 4 AprilTags)
 - Min Detection Quality: `0.2` (optimized for angle tolerance)
 - Angle Detection: 15-90° viewing angles
 
@@ -102,23 +102,23 @@ Scene Setup:
 ├─ XR Origin (AR Rig)
 │  ├─ ARTrackedImageManager (AR Foundation)
 │  │  ├─ Reference Library: ReferenceImageLibrary.asset
-│  │  ├─ Max Moving Images: 2
+│  │  ├─ Max Moving Images: 4
 │  │  └─ Tracked Image Prefab: None (handled by script)
 │  ├─ SimpleImageTracking (Main tracker)
 │  │  ├─ Model Catalog: AprilTagModelCatalog.asset (maps tags→models)
 │  │  ├─ Model Prefab: AprilTagPrefab (fallback)
-│  │  ├─ Model Offset: (0, 0.1, 0) [default if no catalog]
+│  │  ├─ Model Offset: (0, 0.03, 0) [default if no catalog]
 │  │  └─ Show Debug: True
 │  └─ ImprovedImageTracking (Performance monitor)
-│     ├─ Max Moving Images: 2
+│     ├─ Max Moving Images: 4
 │     ├─ Auto Scale Estimation: True
 │     └─ Min Detection Quality: 0.2
 └─ AprilTag Setup (Disabled)
    └─ Old AprilTag system (inactive)
 
 Project Assets:
-├─ ReferenceImageLibrary.asset (100 AprilTag images)
-└─ AprilTagModelCatalog.asset (100 tag→model mappings)
+├─ ReferenceImageLibrary.asset (4 AprilTag images: tags 0-3)
+└─ AprilTagModelCatalog.asset (4 tag→model mappings: pyramid, cylinder, cube, arch)
 ```
 
 ### **AprilTag Generation**
@@ -152,14 +152,17 @@ Project Assets:
 Located at: `Assets/ReferenceImageLibrary.asset`
 
 Contains:
-- AprilTag #0 (tagStandard41h12, 0.09m x 0.09m)
-- AprilTag #1 (tagStandard41h12, 0.09m x 0.09m)
+- AprilTag #0 (tagStandard41h12, 0.09m x 0.09m) → Maps to **Pyramid**
+- AprilTag #1 (tagStandard41h12, 0.09m x 0.09m) → Maps to **Cylinder**
+- AprilTag #2 (tagStandard41h12, 0.09m x 0.09m) → Maps to **Cube**
+- AprilTag #3 (tagStandard41h12, 0.09m x 0.09m) → Maps to **Arch**
 
 **To update:**
 1. In Unity, select `ReferenceImageLibrary.asset`
 2. Add/modify images in the Inspector
 3. Set physical size to match printed tags (0.09 = 90mm)
-4. Rebuild the project
+4. Ensure texture reference is not null (critical for iOS builds)
+5. Rebuild the project
 
 ---
 
@@ -180,6 +183,8 @@ Contains:
      - AprilTag Name: (match Reference Library, e.g., "0")
      - Descriptive Name: (e.g., "Leaping Coyote")
      - Model Prefab: (drag your model prefab)
+     - Custom Offset: (0, 0.03, 0) - typical value to lift model off tag
+     - Custom Scale: 0.5 - adjust to fit your model
    - Enable: ✓
 
 3. **Rebuild project**
@@ -200,8 +205,9 @@ Contains:
 2. Find `ARTrackedImageManager` component
 3. Change "Max Number Of Moving Images":
    - `1`: Best performance, single marker
-   - `2`: **Optimal for 2 AprilTags** (current)
-   - `3-4`: Multiple markers, modern devices only
+   - `2`: Good for 2 AprilTags
+   - `3-4`: Multiple markers (current: 4)
+   - `5+`: Many markers, modern devices only
 
 ### **Disable Debug Logging**
 1. Select `XR Origin (AR Rig)` GameObject
@@ -253,6 +259,18 @@ See [README_Performance.md](README_Performance.md) for detailed optimization inf
 3. Disable debug logging
 4. Check device temperature and battery
 
+### **iOS Build fails with "actool failed with exit code 1"**
+This error occurs when the Reference Image Library has null/missing texture references:
+1. Open `Assets/ReferenceImageLibrary.asset` in Unity Inspector
+2. Look for entries with empty texture slots (showing as `None`)
+3. Either:
+   - Remove entries with null textures (click minus button)
+   - OR add the missing AprilTag images to those slots
+4. Ensure all textures are marked as **Read/Write Enabled** in their import settings
+5. Rebuild the project
+
+**Important:** ARKit's `actool` cannot compile reference libraries with null texture references. All entries must have valid images.
+
 ---
 
 ## 📖 **Further Reading**
@@ -271,8 +289,9 @@ See [README_Performance.md](README_Performance.md) for detailed optimization inf
 | SimpleImageTracking | ✅ Active | Core functionality |
 | ImprovedImageTracking | ✅ Active | Performance monitoring |
 | AprilTag Detection System | ⚠️ Disabled | Legacy system, kept for reference |
-| Reference Image Library | ✅ Configured | 2 AprilTags at 0.09m |
+| Reference Image Library | ✅ Configured | 4 AprilTags (0-3) at 0.09m each |
+| Model Catalog | ✅ Configured | 4 models: pyramid, cylinder, cube, arch |
 | Performance Optimizations | ✅ Applied | Frame processing optimized |
 
-**Last Updated:** Optimizations applied, Min Detection Quality set to 0.2, frame processing optimized.
+**Last Updated:** 4 AprilTags configured with individual models, Max Moving Images set to 4, texture references validated for iOS builds.
 
