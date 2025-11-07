@@ -17,7 +17,7 @@ MonoBehaviour:
     descriptiveName: ghost dog howl
     modelPrefab: {fileID: 6823200343395401083, guid: bee1107a703af42af8cc7ba5e0076cc5, type: 3}
     enabled: 1
-    customOffset: {x: 0, y: 0.03, z: 0}
+    customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
     customScale: 0.12
     notes: 
@@ -25,7 +25,7 @@ MonoBehaviour:
     descriptiveName: pricklypear
     modelPrefab: {fileID: 8638068505903565412, guid: 03c4af6429d3941b29cff2f8ab1437ac, type: 3}
     enabled: 1
-    customOffset: {x: 0, y: 0.03, z: 0}
+    customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
     customScale: 0.16
     notes: 
@@ -33,7 +33,7 @@ MonoBehaviour:
     descriptiveName: cube
     modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
     enabled: 1
-    customOffset: {x: 0, y: 0.03, z: 0}
+    customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
     customScale: 0.5
     notes: 
@@ -42,7 +42,7 @@ MonoBehaviour:
     modelPrefab: {fileID: 5644993001778751573, guid: a85db6a1cbacc49e8a27b45a0893dd86, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
-    customRotation: {x: 0, y: 0, z: 0}
+    customRotation: {x: -90, y: 0, z: 0}
     customScale: 0.025
     notes: 
   defaultModel: {fileID: 0}

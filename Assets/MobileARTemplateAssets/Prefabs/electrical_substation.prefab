@@ -53,9 +53,13 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6a87c47ece11d46d38c7c033e903d241, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6a87c47ece11d46d38c7c033e903d241, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+      objectReference: {fileID: 2100000, guid: 109207b3ec45446afb082067696d36e6, type: 3}
     - target: {fileID: 919132149155446097, guid: 6a87c47ece11d46d38c7c033e903d241, type: 3}
       propertyPath: m_Name
       value: electrical_substation
