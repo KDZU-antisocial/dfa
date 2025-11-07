@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mappings:
   - aprilTagName: 0
-    descriptiveName: pyramid
+    descriptiveName: ghost dog howl
     modelPrefab: {fileID: 6823200343395401083, guid: bee1107a703af42af8cc7ba5e0076cc5, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
@@ -22,12 +22,12 @@ MonoBehaviour:
     customScale: 0.12
     notes: 
   - aprilTagName: 1
-    descriptiveName: cylinder
-    modelPrefab: {fileID: 3745605318107395163, guid: daca7e1cd0a975941a64a8a9cbd8e5e5, type: 3}
+    descriptiveName: pricklypear
+    modelPrefab: {fileID: 8638068505903565412, guid: 03c4af6429d3941b29cff2f8ab1437ac, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.5
+    customScale: 0.16
     notes: 
   - aprilTagName: 2
     descriptiveName: cube
@@ -38,11 +38,11 @@ MonoBehaviour:
     customScale: 0.5
     notes: 
   - aprilTagName: 3
-    descriptiveName: arch
-    modelPrefab: {fileID: 7279467769842343898, guid: b1b37ac0eaa6a9a4785fc1f26065e8b3, type: 3}
+    descriptiveName: substation
+    modelPrefab: {fileID: 5644993001778751573, guid: a85db6a1cbacc49e8a27b45a0893dd86, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.5
+    customScale: 0.025
     notes: 
   defaultModel: {fileID: 0}
