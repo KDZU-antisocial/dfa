@@ -13,6 +13,18 @@ PrefabInstance:
       value: ghost-dog-exported-model
       objectReference: {fileID: 0}
     - target: {fileID: -6601043233671942095, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6601043233671942095, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6601043233671942095, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6601043233671942095, guid: 004ca555c0822460687b31515f432946, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.2361627
       objectReference: {fileID: 0}
@@ -52,6 +64,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6601043233671942095, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425563529021635733, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8425563529021635733, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c00fc6ca183d944348acb151bf1aefc9, type: 2}
+    - target: {fileID: 8425563529021635733, guid: 004ca555c0822460687b31515f432946, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c00fc6ca183d944348acb151bf1aefc9, type: 2}
     - target: {fileID: 8914207829204841315, guid: 004ca555c0822460687b31515f432946, type: 3}
       propertyPath: m_Controller
       value: 

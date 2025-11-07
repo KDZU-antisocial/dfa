@@ -19,7 +19,7 @@ MonoBehaviour:
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.5
+    customScale: 0.12
     notes: 
   - aprilTagName: 1
     descriptiveName: cylinder
