@@ -6,6 +6,11 @@ The Dubplate Forensics Agent positions the DJ's body as a live interface between
 
 Built with Unity AR Foundation and optimized for iOS devices, DFA tracks AprilTag markers in real-time, making the invisible architectures of recorded music visible and performable.
 
+## 🎬 See Our First Test of the System
+
+[![DFA Performance Demo](https://img.youtube.com/vi/cRf0pgQk89U/maxresdefault.jpg)](https://www.youtube.com/watch?v=cRf0pgQk89U)
+
+
 ## 🎯 What This Does
 
 This Unity project uses your iPhone's camera to:

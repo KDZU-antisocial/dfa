@@ -15,11 +15,11 @@ MonoBehaviour:
   mappings:
   - aprilTagName: 0
     descriptiveName: pyramid
-    modelPrefab: {fileID: 7657548977611231357, guid: 3cbfcd4079a5031478389d5ab3c8c311, type: 3}
+    modelPrefab: {fileID: 6823200343395401083, guid: bee1107a703af42af8cc7ba5e0076cc5, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.5
+    customScale: 0.12
     notes: 
   - aprilTagName: 1
     descriptiveName: cylinder
