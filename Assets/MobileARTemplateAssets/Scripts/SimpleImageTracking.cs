@@ -159,6 +159,7 @@ public class SimpleImageTracking : MonoBehaviour
     void OnImageAdded(ARTrackedImage trackedImage)
     {
         string tagName = trackedImage.referenceImage.name;
+        AprilTagModelMapping mapping = null;
         
         if (m_ShowDebug)
         {
@@ -202,7 +203,7 @@ public class SimpleImageTracking : MonoBehaviour
         // Check if catalog has custom settings for this tag
         if (m_ModelCatalog != null)
         {
-            var mapping = m_ModelCatalog.mappings.Find(m => m.aprilTagName == tagName);
+            mapping = m_ModelCatalog.mappings.Find(m => m.aprilTagName == tagName);
             if (mapping != null)
             {
                 // Always use catalog values (they have sensible defaults: 0.1m up, scale 1)
@@ -224,6 +225,31 @@ public class SimpleImageTracking : MonoBehaviour
         spawnedObject.transform.localPosition = offset;
         spawnedObject.transform.localRotation = Quaternion.Euler(rotation);
         spawnedObject.transform.localScale = Vector3.one * scale;
+
+        // Configure spin behaviour if available
+        if (mapping != null)
+        {
+            TagModelSpinController spinController = spawnedObject.GetComponentInChildren<TagModelSpinController>();
+            if (spinController != null)
+            {
+                if (mapping.enableSpin)
+                {
+                    spinController.ConfigureSpin(true, mapping.initialRPM, mapping.targetRPM, mapping.rampDurationSeconds);
+                    if (m_ShowDebug && mapping.HasSpinSettings())
+                    {
+                        Debug.Log($"[ImageTracking] 🔁 Spin configured for '{mapping.descriptiveName}' (initialRPM={mapping.initialRPM}, targetRPM={mapping.targetRPM}, ramp={mapping.rampDurationSeconds}s)");
+                    }
+                }
+                else
+                {
+                    spinController.DisableSpin();
+                }
+            }
+            else if (mapping.enableSpin && m_ShowDebug)
+            {
+                Debug.LogWarning($"[ImageTracking] ⚠️ '{mapping.descriptiveName}' requested spin but no TagModelSpinController was found on the prefab.");
+            }
+        }
 
         // Store reference
         m_SpawnedObjects[trackedImage.trackableId] = spawnedObject;

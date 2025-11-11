@@ -55,5 +55,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -7096806528661939046, guid: e5e2354b6ca254426bdda8bbf4f3edec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5122563013274392848}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: e5e2354b6ca254426bdda8bbf4f3edec, type: 3}
+--- !u!1 &8638068505903565412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7096806528661939046, guid: e5e2354b6ca254426bdda8bbf4f3edec, type: 3}
+  m_PrefabInstance: {fileID: 7666113489889498878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5122563013274392848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638068505903565412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e013e0d26a53b4546a090a7bc61a3140, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpinEnabled: 1
+  m_DefaultRPM: 0
+  m_RotationAxis: {x: 0, y: 1, z: 0}
+  m_RotationSpace: 1
+  m_DefaultRampDuration: 0

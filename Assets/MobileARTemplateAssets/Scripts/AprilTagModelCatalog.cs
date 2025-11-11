@@ -158,6 +158,19 @@ public class AprilTagModelMapping
     [Tooltip("Optional: Custom scale for this specific model (1 = normal size)")]
     public float customScale = 1f;
 
+    [Header("Spin Settings (Optional)")]
+    [Tooltip("Enable runtime spin control for this model")]
+    public bool enableSpin = false;
+
+    [Tooltip("Starting RPM applied when the model spawns (negative = counter-clockwise)")]
+    public float initialRPM = 0f;
+
+    [Tooltip("Target RPM to reach after ramping (negative = counter-clockwise)")]
+    public float targetRPM = 0f;
+
+    [Tooltip("Seconds to ramp from initial to target RPM (0 = instant)")]
+    public float rampDurationSeconds = 0f;
+
     [Header("Metadata (Optional)")]
     [Tooltip("Optional: Notes or description for this mapping")]
     [TextArea(2, 4)]
@@ -172,6 +185,14 @@ public class AprilTagModelMapping
         return customOffset != defaultOffset || 
                customRotation != Vector3.zero || 
                customScale != 1f;
+    }
+
+    /// <summary>
+    /// Returns true if spin settings are configured to do anything.
+    /// </summary>
+    public bool HasSpinSettings()
+    {
+        return enableSpin && (Mathf.Abs(initialRPM) > 0.001f || Mathf.Abs(targetRPM) > 0.001f || rampDurationSeconds > 0f);
     }
 }
 
