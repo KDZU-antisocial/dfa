@@ -50,14 +50,14 @@ MonoBehaviour:
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 3
-    descriptiveName: substation
-    modelPrefab: {fileID: 5644993001778751573, guid: a85db6a1cbacc49e8a27b45a0893dd86, type: 3}
+    descriptiveName: pyramid white very slow flip
+    modelPrefab: {fileID: 6586985620801493534, guid: 29e092da5e63c4f839414e3cb8eea8af, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
-    customRotation: {x: -90, y: 0, z: 0}
-    customScale: 0.025
-    enableSpin: 1
-    initialRPM: -15.15
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.00125
+    enableSpin: 0
+    initialRPM: 0
     targetRPM: 0
     rampDurationSeconds: 0
     notes: 
