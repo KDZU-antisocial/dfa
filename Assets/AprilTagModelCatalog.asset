@@ -86,12 +86,12 @@ MonoBehaviour:
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 6
-    descriptiveName: cube variant
-    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    descriptiveName: ghost dog death
+    modelPrefab: {fileID: 6823200343395401083, guid: bee1107a703af42af8cc7ba5e0076cc5, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.3
+    customScale: 0.12
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0
