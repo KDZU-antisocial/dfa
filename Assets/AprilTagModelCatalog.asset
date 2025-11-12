@@ -121,4 +121,4 @@ MonoBehaviour:
     targetRPM: 0
     rampDurationSeconds: 0
     notes: 
-  defaultModel: {fileID: 0}
+  defaultModel: {fileID: 427942657002674601, guid: b3c00134f5ed841dbb84e1c25c6dcd45, type: 3}
