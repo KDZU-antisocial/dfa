@@ -26,24 +26,24 @@ MonoBehaviour:
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 1
-    descriptiveName: pricklypear
-    modelPrefab: {fileID: 263536415472992829, guid: bcfb00f4eba0541e5bd2430decdf333f, type: 3}
+    descriptiveName: Packard Plant Backflip
+    modelPrefab: {fileID: 2709876092226956586, guid: 3dea67063966543dd896653dadbc2fce, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.16
-    enableSpin: 1
-    initialRPM: -33.3
+    customScale: 0.0015
+    enableSpin: 0
+    initialRPM: 0
     targetRPM: 0
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 2
-    descriptiveName: cube
-    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    descriptiveName: Pyramid Skeleton Jump
+    modelPrefab: {fileID: 2729248511784248915, guid: 2ba047a936ccd4d44aa7edf0b90c135f, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.5
+    customScale: 0.0017
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0

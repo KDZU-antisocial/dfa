@@ -20,7 +20,7 @@ This guide explains how to take an imported `.glb` that already contains animati
    - `Clip_0`, `Clip_1`, etc. – animation clips.
 3. Select `Clip_0` to open its settings in the Inspector.
    - Enable **Loop Time** if you want it to repeat.
-   - Click **Apply** to save changes.
+   - Click **Apply** to save changes. You may not see this option.
 
 ---
 
@@ -29,7 +29,7 @@ This guide explains how to take an imported `.glb` that already contains animati
 1. Drag the GLB’s `Imported Object` into the Scene or Hierarchy.  
    Unity creates an instance with mesh renderers, an Animator component, and materials.
 2. (Optional) Add any wrapper objects you need (e.g., `SpinRoot` with `TagModelSpinController`).
-3. Drag the resulting GameObject hierarchy from the Hierarchy back into the Project window to create a prefab.  
+3. Drag the resulting GameObject hierarchy from the Hierarchy back into the Project window to create a prefab (e.g. `Assets/Prefabs/`).  
    - This prefab is what you’ll reference in `AprilTagModelCatalog`.
 
 ---
@@ -42,7 +42,7 @@ If the Animator component on your prefab shows **Controller: None (Runtime Anima
    - In the Project window (for example under `Assets/Animations`), right-click → **Create → Animator Controller**.  
    - Name it something like `PricklyPearController`, `GhostDogController`, etc.
 2. **Assign it to the Animator**  
-   - Select your prefab instance (or the prefab in Prefab Mode).  
+   - Go back to your prefab and double-click it to open it. You'll see it has an Animator Conotroller set to None.  
    - In the Animator component, drag the new controller asset into the `Controller` field (replacing “None”).
 3. **Open the controller in the Animator window**  
    - Double-click the controller asset (or click the small target icon next to the field and choose **Open**).  
@@ -56,9 +56,10 @@ If the Animator component on your prefab shows **Controller: None (Runtime Anima
    - In the Project window, expand your GLB and locate `Clip_0`.  
    - Drag `Clip_0` into the Animator window. Unity creates a state box that uses the clip.
 2. **Set it as the default**  
-   - Right-click the new state → **Set as Layer Default State**. The box turns orange, meaning it runs automatically.
+   - Right-click the new state → **Set as Layer Default State**. The box turns orange, meaning it runs automatically. It may already be orange.
 3. **Configure the clip if needed**  
    - Click `Clip_0` in the Project window. In the clip Inspector, tick **Loop Time** if you want it to keep spinning, then click **Apply**.
+   - Adjust the Speed if you want to speed up or slow down the animation.
 
 ---
 
@@ -77,6 +78,7 @@ If you edited an instance in the scene:
 1. Open `AprilTagModelCatalog.asset`.
 2. For the relevant tag entry:
    - Set `Model Prefab` to the prefab you just configured.
+   - (Optional) Set scale to something like 0.0015
    - (Optional) Enable spin and set RPM/ramp values.
 3. Save the asset.
 
