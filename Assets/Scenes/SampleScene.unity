@@ -6326,9 +6326,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b9c8e6d5a4f3c2e1b0d9f8a7c6e5d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MaxNumberOfMovingImages: 2
+  m_MaxNumberOfMovingImages: 1
   m_EnableAutomaticImageScaleEstimation: 1
-  m_MinimumDetectionQuality: 0.2
+  m_MinimumDetectionQuality: 0.3
 --- !u!1 &1756045394
 GameObject:
   m_ObjectHideFlags: 0

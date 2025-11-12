@@ -87,7 +87,7 @@ MonoBehaviour:
     notes: 
   - aprilTagName: 6
     descriptiveName: ghost dog death
-    modelPrefab: {fileID: 6823200343395401083, guid: bee1107a703af42af8cc7ba5e0076cc5, type: 3}
+    modelPrefab: {fileID: 982005044350299362, guid: e34bd296e02094142a35dfeeec6c5654, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
