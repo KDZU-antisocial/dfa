@@ -38,20 +38,27 @@ This guide explains how to take an imported `.glb` that already contains animati
 
 If the Animator component on your prefab shows **Controller: None (Runtime Animator Controller)**, create one:
 
-1. In the Project window, right-click → **Create → Animator Controller**.  
-   Name it descriptively (e.g., `PricklyPearController`).
-2. Select your prefab (or the instance) and assign the new controller to its **Animator** component:
-   - Drag the controller into the Animator’s `Controller` field.
+1. **Create a controller asset**  
+   - In the Project window (for example under `Assets/Animations`), right-click → **Create → Animator Controller**.  
+   - Name it something like `PricklyPearController`, `GhostDogController`, etc.
+2. **Assign it to the Animator**  
+   - Select your prefab instance (or the prefab in Prefab Mode).  
+   - In the Animator component, drag the new controller asset into the `Controller` field (replacing “None”).
+3. **Open the controller in the Animator window**  
+   - Double-click the controller asset (or click the small target icon next to the field and choose **Open**).  
+   - Unity opens an empty graph labeled **Entry**.
 
 ---
 
 ## 5. Add the Clip to the Controller
 
-1. Double-click the Animator Controller asset to open the **Animator** window (state machine graph).
-2. In the Project window, drag `Clip_0` into the Animator graph.  
-   Unity creates a state that references the clip.
-3. Right-click that state → **Set as Layer Default State**.  
-   It turns **orange**, meaning it plays immediately.
+1. **Drag the clip into the graph**  
+   - In the Project window, expand your GLB and locate `Clip_0`.  
+   - Drag `Clip_0` into the Animator window. Unity creates a state box that uses the clip.
+2. **Set it as the default**  
+   - Right-click the new state → **Set as Layer Default State**. The box turns orange, meaning it runs automatically.
+3. **Configure the clip if needed**  
+   - Click `Clip_0` in the Project window. In the clip Inspector, tick **Loop Time** if you want it to keep spinning, then click **Apply**.
 
 ---
 
@@ -60,7 +67,7 @@ If the Animator component on your prefab shows **Controller: None (Runtime Anima
 If you edited an instance in the scene:
 
 1. Select the root of the prefab instance in the Hierarchy.
-2. In the Inspector, click **Apply** (or right-click → **Prefab → Apply All**).  
+2. In the Inspector, click **Apply** (top of the Inspector) or right-click → **Prefab → Apply All**.  
    This writes the Animator + controller setup back to the prefab asset.
 
 ---
