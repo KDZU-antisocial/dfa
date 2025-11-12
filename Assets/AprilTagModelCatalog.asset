@@ -43,7 +43,7 @@ MonoBehaviour:
     enabled: 1
     customOffset: {x: 0, y: 0.01, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.0017
+    customScale: 0.0005
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0
