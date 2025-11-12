@@ -74,12 +74,12 @@ MonoBehaviour:
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 5
-    descriptiveName: arch variant
-    modelPrefab: {fileID: 7279467769842343898, guid: b1b37ac0eaa6a9a4785fc1f26065e8b3, type: 3}
+    descriptiveName: pyramid red rotate
+    modelPrefab: {fileID: 6905996848383713370, guid: d8e7ec1d179e9476994b12cdeaa63eda, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.3
+    customScale: 0.0005
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0
