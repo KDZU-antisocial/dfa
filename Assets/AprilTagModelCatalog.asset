@@ -98,24 +98,84 @@ MonoBehaviour:
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 7
-    descriptiveName: cube variant
-    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    descriptiveName: Pyramid Night Threes
+    modelPrefab: {fileID: 8362008715299317081, guid: dc28f207d196b4ef0b60f9e71fea9404, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.3
+    customScale: 0.003
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0
     rampDurationSeconds: 0
     notes: 
   - aprilTagName: 8
-    descriptiveName: cube variant
-    modelPrefab: {fileID: 8986328500875594450, guid: d825bbdf58c379d4290da92e387f71d0, type: 3}
+    descriptiveName: Packard Plant Infrared Model
+    modelPrefab: {fileID: 1897918600266750435, guid: 8531292d67458472588fefc950675f79, type: 3}
     enabled: 1
     customOffset: {x: 0, y: 0.03, z: 0}
     customRotation: {x: 0, y: 0, z: 0}
-    customScale: 0.3
+    customScale: 0.003
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 9
+    descriptiveName: Pyramid Red
+    modelPrefab: {fileID: 4368368287362162283, guid: 2bf1e6422b3eb44c29b05854c7558236, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.001
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 10
+    descriptiveName: Pyramid Night BW
+    modelPrefab: {fileID: 4000091209230797658, guid: dafe04c0d1ed9443d8e9e1a494042d8a, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.07
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 11
+    descriptiveName: Pyramid White Crop
+    modelPrefab: {fileID: 8166867400054834822, guid: 35f1072c9461e4cb591ed5ee8f0f439f, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.01, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.0015
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 12
+    descriptiveName: Ghost Dog Fetch
+    modelPrefab: {fileID: 5101637988472287519, guid: 38319047c8a7b4f2ca82f57781f5f96e, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.18
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 13
+    descriptiveName: Packard Plant Infrared Model
+    modelPrefab: {fileID: 1897918600266750435, guid: 8531292d67458472588fefc950675f79, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.0037
     enableSpin: 0
     initialRPM: 0
     targetRPM: 0
