@@ -181,4 +181,88 @@ MonoBehaviour:
     targetRPM: 0
     rampDurationSeconds: 0
     notes: 
+  - aprilTagName: 14
+    descriptiveName: Rat Climb
+    modelPrefab: {fileID: 4966439689257152162, guid: e088de890ba8b49c18859b38af5c703a, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.25
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 15
+    descriptiveName: Prickly Reload
+    modelPrefab: {fileID: 1841282654841805338, guid: b1bbcecfcb0064487bc5e1a7f89c1092, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.14
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 16
+    descriptiveName: Frozen Wave
+    modelPrefab: {fileID: 2544370126739169300, guid: e9f4a59fd610c4db482789d0645fcfc5, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.07
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 17
+    descriptiveName: Ghost Dog Walk
+    modelPrefab: {fileID: 5699893585246547451, guid: a11ffc2a68a9243bba45f87891248bfe, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.12
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 18
+    descriptiveName: Purple Prickly Pear
+    modelPrefab: {fileID: 9084626897518122848, guid: 6205ca54177584f78a4cca041cd29009, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.03, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.12
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 19
+    descriptiveName: Asteroid Ryugu
+    modelPrefab: {fileID: 6984289207100446744, guid: f970c2331451047ce83b16d23536aa3f, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.06, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.8
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
+  - aprilTagName: 20
+    descriptiveName: Prickly Pear Reverse Spin
+    modelPrefab: {fileID: 8932851072268057611, guid: aa4f6b8d6954c4fbfbbf01148c7fa931, type: 3}
+    enabled: 1
+    customOffset: {x: 0, y: 0.06, z: 0}
+    customRotation: {x: 0, y: 0, z: 0}
+    customScale: 0.8
+    enableSpin: 0
+    initialRPM: 0
+    targetRPM: 0
+    rampDurationSeconds: 0
+    notes: 
   defaultModel: {fileID: 427942657002674601, guid: b3c00134f5ed841dbb84e1c25c6dcd45, type: 3}
