@@ -2,7 +2,7 @@
 
 KDZU’s Dubplate Forensics Agent (DFA) is a software-and-hardware platform that uses augmented reality (AR) fiduciary markers, specifically AprilTag markers, to summon and animate spectral 3D forms in real time as the DJ manipulates vinyl records. Built with Unity AR Foundation and optimized for iOS devices, DFA tracks AprilTag markers in real-time, making the invisible architectures of recorded music visible and performable. The DFA functions both as a practical performance instrument and a mythic device, created to uncover the hauntologies and mythic narratives embedded in recorded sound.
 
-The DFA system pairs animated 3d models with the DJ's music tracks to create a manipulable multimedia storytelling system, where sound, imagery, and gesture commingle to reveal the unseen and mythic layers embedded in the DJ's music. 
+The DFA system pairs animated 3D models with the DJ's music tracks to create a manipulable multimedia storytelling system, where sound, imagery, and gesture commingle to reveal the unseen and mythic layers embedded in the DJ's music. 
 
 ## 🎬 Check Out this Video of Our First Test of the System
 
