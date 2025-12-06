@@ -1,23 +1,21 @@
 # DFA - Dubplate Forensics Agent
 
-**Dubplate Forensics Agent (DFA)** is an innovative performance software and hardware system that utilizes augmented reality (AR) fiduciary markers to spawn and animate spectral 3D forms as the DJ manipulates their records. The DFA functions as both a practical and mythical tool for uncovering the hauntologies present in sound. It is an interpretive technology that treats each music track as a vessel for layered live multimedia performance and storytelling.
+KDZU’s Dubplate Forensics Agent (DFA) is a software-and-hardware platform that uses augmented reality (AR) fiduciary markers, specifically AprilTag markers, to summon and animate spectral 3D forms in real time as the DJ manipulates vinyl records. Built with Unity AR Foundation and optimized for iOS devices, DFA tracks AprilTag markers in real-time, making the invisible architectures of recorded music visible and performable. The DFA functions both as a practical performance instrument and a mythic device, created to uncover the hauntologies and mythic narratives embedded in recorded sound.
 
-The Dubplate Forensics Agent positions the DJ's body as a live interface between human gesture, computer vision, and sonic narrative. Through AR fiduciary markers affixed to vinyl records and real-time 3D animations, the system translates tactile turntable performance into an expanded audiovisual field. As records spin, pause, and scratch beneath the needle, corresponding digital forms materialize in augmented space—each track summoning its own spectral presence. The DFA foregrounds the performer's embodied actions as catalysts for digital storytelling, transforming the mixing desk into an archaeological site where sound, memory, and moving image converge.
+The DFA system pairs animated 3d models with the DJ's music tracks to create a manipulable multimedia storytelling system, where sound, imagery, and gesture commingle to reveal the unseen and mythic layers embedded in the DJ's music. 
 
-Built with Unity AR Foundation and optimized for iOS devices, DFA tracks AprilTag markers in real-time, making the invisible architectures of recorded music visible and performable.
-
-## 🎬 See Our First Test of the System
+## 🎬 Check Out this Video of Our First Test of the System
 
 [![DFA Performance Demo](https://img.youtube.com/vi/cRf0pgQk89U/maxresdefault.jpg)](https://www.youtube.com/watch?v=cRf0pgQk89U)
 
 
-## 🎯 What This Does
+## 🎯 What The Code Does
 
 This Unity project uses your iPhone's camera to:
 1. **Detect AprilTag markers** in the real world (printed labels)
 2. **Display 3D models** positioned and oriented on each tag
 3. **Track tags in real-time** as you move around them
-4. **Support multiple tags** simultaneously (currently configured for 4 tags)
+4. **Support multiple tags** simultaneously (currently configured for 2 tags)
 
 ## ⚡ Quick Start
 
